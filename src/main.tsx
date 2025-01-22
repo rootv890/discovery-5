@@ -10,6 +10,7 @@ import { RouterProvider } from "react-router";
 import LandingPage from "./pages/LandingPage.tsx";
 import WaitlistPage from "./pages/WaitlistPage.tsx";
 import MarketingPage from "./pages/MarketingPage.tsx";
+import ThankYouPage from "./pages/ThankYouPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
           {
             path: "waitlist",
             element: <WaitlistPage />,
+          },
+          {
+            path: "/thank-you",
+            element: <ThankYouPage />,
           },
           {
             index: true,

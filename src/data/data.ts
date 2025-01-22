@@ -40,3 +40,23 @@ export const marketingNavItems: {
       url: "/contact",
     }
   ];
+
+
+type IllustrationType = Record<string, {
+  url: string;
+  alt: string;
+}>;
+
+
+export const svgIllustrations: Record<string, IllustrationType> = {
+  waitlistIllustrations: {
+    webUI: {
+      url: "floating-ui.svg",
+      alt: "Requesting Hand illustration",
+    },
+    request: {
+      url: "requesting-hand.svg",
+      alt: "Web UI floating illustration",
+    }
+  }
+};

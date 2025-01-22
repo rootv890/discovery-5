@@ -6,25 +6,13 @@ export default {
     files: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
     extract,
   },
-  plugins: [fluid],
+  plugins: [fluid, require("tailwindcss-animated")],
   theme: {
     extend: {
-      /* --line-height-vs: "1rem";
-  --line-height-s: "1.25rem";
-  --line-height-m: "1.375rem";
-  --line-height-l: "1.5rem";
-  --line-height-xl: "1.875rem";
-  --line-height-2xl: "2.25rem";
-  --line-height-3xl: "2.75rem";
-
-  --size-very-small: "0.75rem";
-  --size-small: "0.875rem";
-  --size-default: "1rem";
-  --size-h5: "1.3125rem";
-  --size-h4: "1.75rem";
-  --size-h3: "2.375rem";
-  --size-h2: "3.1875rem";
-  --size-h1: "4.1875rem"; */
+      boxShadow: {
+        // box-shadow: rgba(6, 36, 58, 0.2) 0px 7px 29px 0px;
+        "card-lg": "0px 7px 29px 0px rgba(6, 36, 58, 0.2)",
+      },
 
       lineHeight: {
         vs: 1,

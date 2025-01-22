@@ -59,6 +59,8 @@ export const useCreateWaitlist = create<WaitlistReturns>( ( set ) => ( {
   status: 'idle',
   // setStatus function to update the status in other components
   setStatus: ( status: 'idle' | 'loading' | 'success' | 'error' ) => {
+    console.log( "Status", status );
+
     set( { status: status } );
   }
 } ) );

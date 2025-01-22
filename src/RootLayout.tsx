@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 
 const RootLayout = () => {
   return (
-    <div className="">
+    <div className="bg-background">
       {/* <h1>Root Layout</h1> */}
       <Outlet />
     </div>

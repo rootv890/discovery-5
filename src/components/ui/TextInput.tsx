@@ -7,7 +7,7 @@ interface TextInputProps extends React.ComponentPropsWithoutRef<"input"> {
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ id, label, type, ...props }, ref) => {
     return (
-      <div className="flex flex-col gap-3 items-start  w-full ">
+      <div className="flex flex-col gap-1 items-start  w-full ">
         <Label.Root className="font-medium text-body  w-full" htmlFor={id}>
           {label}
         </Label.Root>

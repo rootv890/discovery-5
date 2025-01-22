@@ -3,9 +3,11 @@ import MarketingNav from "../components/MarketingNav";
 
 const MarketingPage = () => {
   return (
-    <div className="w-full h-screen max-w-screen-xl mx-auto bg-background">
+    <div className="w-full h-screen relative  mx-auto bg-background flex flex-col">
       <MarketingNav />
-      <Outlet />
+      <div className="flex-grow">
+        <Outlet />
+      </div>
     </div>
   );
 };
