@@ -1,0 +1,211 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+/* import Futura-BO and Futura-B font /fonts/xx */
+@font-face {
+  font-family: "Futura-BO";
+  src: url("/fonts/Futura-BO.woff2") format("woff2"),
+    url("/fonts/Futura-BO.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Futura-B";
+  src: url("/fonts/Futura-B.woff2") format("woff2"),
+    url("/fonts/Futura-B.woff") format("woff");
+}
+
+:root {
+  --background: #e8f5ff;
+  --foreground: #06243a;
+
+  --muted: #638199;
+  --fainted: #cfeaff;
+
+  --font-inter: "Inter", serif;
+  --font-instrument-serif: "Instrument Serif", serif;
+  --font-futura-bo: "Futura-BO", serif;
+  --font-futura-b: "Futura-B", serif;
+
+  /* Colors */
+  /* UI */
+  --background: #e8f5ff;
+  --foreground: #06243a;
+  --fainted: #cfeaff;
+  --muted: #638199;
+
+  --blue-100: #d8f4ff;
+  --blue-200: #b9ecff;
+  --blue-300: #89e2ff;
+  --blue-400: #51cfff;
+  --blue-50: #edfbff;
+  --blue-500: #29b4ff;
+  --blue-600: #199bfe;
+  --blue-700: #0b7eea;
+  --blue-800: #1065bd;
+  --blue-900: #145694;
+  --blue-950: #11355a;
+
+  --green-100: #dcfcde;
+  --green-200: #bbf7be;
+  --green-300: #87ee8e;
+  --green-400: #4cdd56;
+  --green-50: #f0fdf0;
+  --green-500: #23c42e;
+  --green-600: #17a221;
+  --green-700: #167f1e;
+  --green-800: #17641d;
+  --green-900: #14531a;
+  --green-950: #052e0a;
+
+  --magenta-100: #fee5f8;
+  --magenta-200: #ffcbf4;
+  --magenta-300: #ffa1e9;
+  --magenta-400: #ff76db;
+  --magenta-50: #fef1fb;
+  --magenta-500: #fa3ac2;
+  --magenta-600: #ea18a2;
+  --magenta-700: #cc0a85;
+  --magenta-800: #a80c6c;
+  --magenta-900: #8c0f5c;
+  --magenta-950: #560135;
+
+  --orange-100: #ffe4e1;
+  --orange-200: #ffcec8;
+  --orange-300: #ffaca1;
+  --orange-400: #fe6855;
+  --orange-50: #fff3f1;
+  --orange-500: #f7513c;
+  --orange-600: #e4341e;
+  --orange-700: #c02815;
+  --orange-800: #9f2515;
+  --orange-900: #832519;
+  --orange-950: #480e07;
+
+  /* Text Styles */
+  --line-height-vs: "1rem";
+  --line-height-s: "1.25rem";
+  --line-height-m: "1.375rem";
+  --line-height-l: "1.5rem";
+  --line-height-xl: "1.875rem";
+  --line-height-2xl: "2.25rem";
+  --line-height-3xl: "2.75rem";
+
+  --size-very-small: "0.75rem";
+  --size-small: "0.875rem";
+  --size-default: "1rem";
+  --size-h5: "1.3125rem";
+  --size-h4: "1.75rem";
+  --size-h3: "2.375rem";
+  --size-h2: "3.1875rem";
+  --size-h1: "4.1875rem";
+}
+
+@media (prefers-scheme: dark) {
+  :root {
+    --secondary: #06243a;
+    --foreground: #e8f5ff;
+  }
+}
+
+body {
+  background-color: var(--secondary);
+  color: var(--text-color); /* Use the text color variable */
+  font-family: var(--font-foreground); /* Set a default font for the body */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for dark mode */
+}
+
+/* Typography Styles */
+.instrument-serif-regular {
+  font-family: var(--font-instrument-serif);
+  font-weight: 400;
+  font-style: normal;
+}
+
+.instrument-serif-regular-italic {
+  font-family: var(--font-instrument-serif);
+  font-weight: 400;
+  font-style: italic;
+}
+
+.inter-regular {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-style: normal;
+}
+
+.inter-semibold {
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-style: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .display {
+    @apply font-futura text-[calc(54px)] md:text-[calc(7rem)] uppercase text-foreground text-center tracking-[-0.07em] leading-[1];
+  }
+
+  .display-2 {
+    @apply font-serif  text-[54px] md:text-[7rem] lowercase text-foreground text-center tracking-[-0.05em] leading-[1] italic;
+  }
+
+  .body {
+    @apply font-sans text-[1rem] font-normal text-foreground text-center tracking-[0.01em] leading-[1.4];
+
+    max-width: 460px;
+  }
+  .input {
+    @apply flex gap-2;
+  }
+}
+
+/* checkbox */
+
+input[type="checkbox"] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: #fff;
+  /* Not removed via appearance */
+  margin: 0;
+
+  font: inherit;
+  color: var(--background);
+  width: 1.45em;
+  height: 1.45em;
+  border-radius: 0.15em;
+  border: 0.15em solid currentColor;
+
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+  border-radius: 6px;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--foreground);
+  border-radius: 2px;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+/* modify select  */
+select {
+  appearance: none;
+  background-position: right 0.7rem top 50%;
+  background-size: 0.65rem auto;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiIgaWQ9IkNoZXZyb24tUmlnaHQtLVN0cmVhbWxpbmUtRm9udC1Bd2Vzb21lIiBoZWlnaHQ9IjE2IiB3aWR0aD0iMTYiPjxkZXNjPkNoZXZyb24gUmlnaHQgU3RyZWFtbGluZSBJY29uOiBodHRwczovL3N0cmVhbWxpbmVocS5jb208L2Rlc2M+PCEtLSEgRm9udCBBd2Vzb21lIEZyZWUgNi41LjIgYnkgQGZvbnRhd2Vzb21lIC0gaHR0cHM6Ly9mb250YXdlc29tZS5jb20gTGljZW5zZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tL2xpY2Vuc2UvZnJlZSAoSWNvbnM6IENDIEJZIDQuMCwgRm9udHM6IFNJTCBPRkwgMS4xLCBDb2RlOiBNSVQgTGljZW5zZSkgQ29weXJpZ2h0IDIwMjQgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTEyLjE1MTM2IDcuMjA5MjY1MDAwMDAwMDAxYzAuNDM3MzU1IDAuNDM3MzU1IDAuNDM3MzU1IDEuMTQ3NjE1IDAgMS41ODQ5NzAwMDAwMDAwMDAybC02LjcxNzc1IDYuNzE3NzVjLTAuNDM3MzU1IDAuNDM3MzU1IC0xLjE0NzYxNSAwLjQzNzM1NSAtMS41ODQ5NzAwMDAwMDAwMDAyIDBzLTAuNDM3MzU1IC0xLjE0NzYxNSAwIC0xLjU4NDk3MDAwMDAwMDAwMDJMOS43NzU2NTUgOCAzLjg1MjE0MDAwMDAwMDAwMDMgMi4wNzI5ODVjLTAuNDM3MzU1IC0wLjQzNzM1NSAtMC40MzczNTUgLTEuMTQ3NjE1IDAgLTEuNTg0OTcwMDAwMDAwMDAwMnMxLjE0NzYxNSAtMC40MzczNTUgMS41ODQ5NzAwMDAwMDAwMDAyIDBsNi43MTc3NSA2LjcxNzc1WiIgZmlsbD0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIwLjA1Ij48L3BhdGg+PC9zdmc+");
+  background-repeat: no-repeat;
+}

@@ -1,0 +1,42 @@
+export const heroIllustrations: { url: string, identifier: string; }[] = [
+  {
+    url: "web@2x.png",
+    identifier: "Web illustration",
+  },
+  {
+    url: "pcs@2x.png",
+    identifier: "Mac and Windows illustration",
+  },
+  {
+    url: "books@2x.png",
+    identifier: "books illustration",
+  },
+  {
+    url: "extension@2x.png",
+    identifier: "extension & plugins illustration",
+  },
+];
+
+
+export const marketingNavItems: {
+  title: string,
+  url: string;
+
+}[] = [
+    {
+      title: "tools",
+      url: "/",
+    },
+    {
+      title: "About",
+      url: "/about",
+    },
+    {
+      title: "Join",
+      url: "/join",
+    },
+    {
+      title: "Contact",
+      url: "/contact",
+    }
+  ];
