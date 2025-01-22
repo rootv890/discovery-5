@@ -1,25 +1,10 @@
-import { useEffect, useState } from "react";
 import { GhostButton, PrimaryButton } from "../components/Buttons";
-import MarketingNav from "../components/MarketingNav";
 import { heroIllustrations } from "../data/data";
 import { randomRotate } from "../utiils/utils";
-import { useCreateWaitlist } from "../store/useCreateWaitlist";
+
 import { Link } from "react-router";
 
 const LandingPage = () => {
-  const createWaitlist = useCreateWaitlist((state) => state.createWaitlist);
-
-  const handleTestUser = () => {
-    const testData = {
-      email: "peter@parker22xxxxx2.com",
-      name: "Peter Parker",
-      role: "developers",
-      newsLetter: true,
-    };
-
-    createWaitlist(testData);
-  };
-
   return (
     <section className="w-full min-h-screen  bg-background flex flex-col items-center  pb-8  ">
       <div className="h-full my-auto flex flex-col justify-center items-center">
@@ -58,7 +43,7 @@ const LandingPage = () => {
             designers and developers. No AI involvement — everything is
             handcrafted by humans.
           </p>
-          <PrimaryButton onClick={handleTestUser}>
+          <PrimaryButton>
             <Link to={"/waitlist"}>Join the Waitlist</Link>
           </PrimaryButton>
           <p>

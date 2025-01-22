@@ -2,8 +2,16 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateWaitlist } from "../store/useCreateWaitlist";
 import FormError from "../components/FormError";
 import TextInput from "../components/ui/TextInput";
-import { wait } from "../utiils/utils";
+import { cn, wait } from "../utiils/utils";
 import { useNavigate } from "react-router";
+import { TbLoader2 } from "react-icons/tb";
+
+type WaitlistForm = {
+  email: string;
+  name: string;
+  role: "developer" | "designer" | "both";
+  newsletter: boolean;
+};
 
 const WaitlistForm = () => {
   const navigate = useNavigate();
@@ -50,10 +58,12 @@ const WaitlistForm = () => {
       shadow-card-lg
     "
     >
-      {status}
       <div className="flex gap-1 flex-col ">
-        <h1 className="text-h4 font-sans font-bold tracking-wider text-foreground">
-          Join Discovery5
+        <h1 className="text-h4 font-sans font-bold tracking-wider text-foreground flex items-center gap-1 ">
+          Join Discovery5{" "}
+          <span className=" font-medium leading-tight bg-foreground text-background p-1 rounded-full text-xs px-2 select-none">
+            waitlist
+          </span>
         </h1>
         <p className="text-body  text-balance  leading-tight text-muted">
           Join the waitlist and get updates on development
@@ -134,25 +144,26 @@ const WaitlistForm = () => {
         </div>
 
         <button
-          className="bg-foreground w-full py-4 text-background rounded-lg font-medium text-body hover:bg-opacity-80 hover:text-white  disabled:bg-muted disabled:text-muted transition-colors delay-500 ease-in-out"
-          style={{
-            backgroundColor:
-              status === "success"
-                ? "var(--green-500)"
-                : status === "error"
-                ? "var(--red-500)"
-                : "var(--foreground)",
-          }}
+          className={cn(
+            "w-full py-4  rounded-lg text-body hover:bg-opacity-80 text-background font-semibold tracking-[0.01rem]   disabled:bg-muted disabled:text-muted transition-all duration-200  ease-in-out bg-blue-600 hover:bg-blue-700",
+
+            status === "loading" && "bg-blue-700",
+            status === "idle" && "bg-blue-600"
+          )}
           type="submit"
           disabled={status === "loading"}
         >
-          {status === "loading"
-            ? "Loading"
-            : status === "success"
-            ? "Success"
-            : status === "error"
-            ? "Error"
-            : "Join Waitlist"}
+          {status === "loading" ? (
+            <div className="w-full mx-auto flex items-center justify-center">
+              <TbLoader2 className="animate-spin duration-500 animate-ease-in-out" />
+            </div>
+          ) : status === "success" ? (
+            "Success"
+          ) : status === "error" ? (
+            "Error"
+          ) : (
+            "Join Waitlist"
+          )}
         </button>
       </form>
     </div>

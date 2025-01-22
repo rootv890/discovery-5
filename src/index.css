@@ -25,6 +25,11 @@
   --font-futura-bo: "Futura-BO", serif;
   --font-futura-b: "Futura-B", serif;
 
+  /* border-radius */
+  --rounded: 6px;
+  --rounded-lg: 8px;
+  --rounded-full: 9999px;
+
   /* Colors */
   /* UI */
   --background: #e8f5ff;

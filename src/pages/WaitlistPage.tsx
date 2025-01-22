@@ -1,17 +1,10 @@
-import { heroIllustrations, svgIllustrations } from "../data/data";
-import WaitlistForm from "./WailistForm";
-
-type WaitlistForm = {
-  email: string;
-  name: string;
-  role: "developer" | "designer" | "both";
-  newsletter: boolean;
-};
+import { svgIllustrations } from "../data/data";
+import Form from "./WailistForm";
 
 const WaitlistPage = () => {
   return (
     <div className="w-full my-auto p-6 h-full    mx-auto flex flex-col items-center justify-center  relative ">
-      <div className="w-full  h-fit  max-w-[406px] absolute hidden   md:flex md: lg:right-[10%] top-[-2%] pointer-events-none float animate-fade animate-once animate-ease-in delay-500  ">
+      <div className="w-full  h-fit  max-w-[406px] absolute max-sm:top-[-5%] md: lg:right-[10%] top-[-2%] pointer-events-none float animate-fade animate-once animate-ease-in delay-500  ">
         <img
           className="h-full w-full "
           src={`/illustrations/${svgIllustrations.waitlistIllustrations.webUI.url}`}
@@ -25,7 +18,8 @@ const WaitlistPage = () => {
           alt=""
         />
       </div>
-      <WaitlistForm />
+
+      <Form />
     </div>
   );
 };

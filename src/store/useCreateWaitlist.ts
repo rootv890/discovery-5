@@ -1,6 +1,6 @@
 import PocketBase from 'pocketbase';
 import { WaitlistCollection } from './type';
-import { create, useStore } from 'zustand/react';
+import { create } from 'zustand/react';
 
 
 export const pb = new PocketBase( import.meta.env.VITE_PB_URL );

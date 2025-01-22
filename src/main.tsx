@@ -5,7 +5,7 @@ import "./index.css";
 import App from "./App.tsx";
 
 import RootLayout from "./RootLayout.tsx";
-import { createBrowserRouter, Outlet } from "react-router";
+import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router";
 import LandingPage from "./pages/LandingPage.tsx";
 import WaitlistPage from "./pages/WaitlistPage.tsx";
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
           },
           {
             index: true,
-            path: "/home",
+            path: "/",
             element: <LandingPage />,
           },
         ],

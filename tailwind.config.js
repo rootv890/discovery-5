@@ -14,6 +14,16 @@ export default {
         "card-lg": "0px 7px 29px 0px rgba(6, 36, 58, 0.2)",
       },
 
+      borderRadius: {
+        /*  --rounded: 0.5rem;
+  --rounded-lg: 1rem;
+  --rounded-full: 9999px; */
+
+        md: "0.5rem",
+        lg: "1rem",
+        full: "9999px",
+      },
+
       lineHeight: {
         vs: 1,
         s: 1.25,
