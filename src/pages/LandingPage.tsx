@@ -43,9 +43,10 @@ const LandingPage = () => {
             designers and developers. No AI involvement — everything is
             handcrafted by humans.
           </p>
-          <PrimaryButton>
-            <Link to={"/waitlist"}>Join the Waitlist</Link>
-          </PrimaryButton>
+          <Link to={"/waitlist"}>
+            {" "}
+            <PrimaryButton>Join the Waitlist</PrimaryButton>
+          </Link>
           <p>
             Wanna contribute? <GhostButton>Click here</GhostButton>
           </p>

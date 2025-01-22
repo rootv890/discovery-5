@@ -2,7 +2,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateWaitlist } from "../store/useCreateWaitlist";
 import FormError from "../components/FormError";
 import TextInput from "../components/ui/TextInput";
-import { cn, wait } from "../utiils/utils";
+import { cn, Print, wait } from "../utiils/utils";
 import { useNavigate } from "react-router";
 import { TbLoader2 } from "react-icons/tb";
 
@@ -18,6 +18,7 @@ const WaitlistForm = () => {
   const createWaitlist = useCreateWaitlist((state) => state.createWaitlist);
   const status = useCreateWaitlist((state) => state.status);
   const setStatus = useCreateWaitlist((state) => state.setStatus)!;
+
   // Form Props
   const {
     register,
@@ -39,16 +40,18 @@ const WaitlistForm = () => {
     wait(2000).then(async () => {
       try {
         await createWaitlist(data);
-        setStatus("success");
       } catch (error) {
-        console.log("Error creating waitlist", error);
         setStatus("error");
+        throw new Error("Email already exists");
       }
-    });
 
-    // redirect to success page
-    wait(1000).then(() => {
-      navigate("/thank-you");
+      wait(1000).then(() => {
+        if (status !== "error") {
+          Print("Error", status);
+          return;
+        }
+        navigate("/thank-you");
+      });
     });
   };
 
@@ -58,6 +61,7 @@ const WaitlistForm = () => {
       shadow-card-lg
     "
     >
+      {status}
       <div className="flex gap-1 flex-col ">
         <h1 className="text-h4 font-sans font-bold tracking-wider text-foreground flex items-center gap-1 ">
           Join Discovery5{" "}
@@ -148,24 +152,31 @@ const WaitlistForm = () => {
             "w-full py-4  rounded-lg text-body hover:bg-opacity-80 text-background font-semibold tracking-[0.01rem]   disabled:bg-muted disabled:text-muted transition-all duration-200  ease-in-out bg-blue-600 hover:bg-blue-700",
 
             status === "loading" && "bg-blue-700",
-            status === "idle" && "bg-blue-600"
+            status === "idle" && "bg-blue-600",
+            status === "error" && "bg-orange-600"
           )}
           type="submit"
           disabled={status === "loading"}
         >
           {status === "loading" ? (
-            <div className="w-full mx-auto flex items-center justify-center">
-              <TbLoader2 className="animate-spin duration-500 animate-ease-in-out" />
+            <div className="w-full mx-auto flex items-center text-background justify-center">
+              <TbLoader2 className="animate-spin duration-500 animate-ease-in-out animate-infinite " />
             </div>
           ) : status === "success" ? (
             "Success"
           ) : status === "error" ? (
-            "Error"
+            <div className="w-full mx-auto flex items-center text-background gap-2  justify-center  ">
+              Retry
+            </div>
           ) : (
             "Join Waitlist"
           )}
         </button>
       </form>
+
+      {status === "error" && (
+        <FormError error="An error occured, please try again" type="error" />
+      )}
     </div>
   );
 };

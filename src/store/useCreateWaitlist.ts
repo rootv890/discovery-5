@@ -1,6 +1,7 @@
 import PocketBase from 'pocketbase';
 import { WaitlistCollection } from './type';
 import { create } from 'zustand/react';
+import { Print } from '../utiils/utils';
 
 
 export const pb = new PocketBase( import.meta.env.VITE_PB_URL );
@@ -22,6 +23,12 @@ export const useCreateWaitlist = create<WaitlistReturns>( ( set ) => ( {
     role: '',
   }
   ,
+
+  // setStatus function to update the status in other components
+  setStatus: ( status: 'idle' | 'loading' | 'success' | 'error' ) => {
+    set( { status: status } );
+  },
+
   // createWaitlist function
   createWaitlist: async ( data: WaitlistCollection ) => {
 
@@ -29,7 +36,7 @@ export const useCreateWaitlist = create<WaitlistReturns>( ( set ) => ( {
 
       // Check if the data is valid
       if ( !data.email || !data.name || !data.role ) {
-        console.log( "Invalid data" );
+        Print( "Invalid data" );
         return;
       }
 
@@ -40,7 +47,8 @@ export const useCreateWaitlist = create<WaitlistReturns>( ( set ) => ( {
       );
 
       if ( checkEmail.length > 0 ) {
-        console.log( "Email already exists" );
+        Print( "Email already exists" );
+        set( ( state ) => ( { ...state, status: 'error' } ) );
         return;
       }
       // Check if the email is already in the waitlist
@@ -48,19 +56,14 @@ export const useCreateWaitlist = create<WaitlistReturns>( ( set ) => ( {
       // Create a new document in the 'WaitListUsers' collection
       await pb.collection( 'WaitListUsers' ).create( data );
       set( { waitlist: data } );
-      console.log( "Successfully created waitlist" );
+      Print( "Successfully created waitlist" );
 
     } catch ( error ) {
-      console.log( "Error creating waitlist", error );
+      Print( "Error creating waitlist", error );
     }
   },
 
   // Status of the waitlist
   status: 'idle',
-  // setStatus function to update the status in other components
-  setStatus: ( status: 'idle' | 'loading' | 'success' | 'error' ) => {
-    console.log( "Status", status );
 
-    set( { status: status } );
-  }
 } ) );
