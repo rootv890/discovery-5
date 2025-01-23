@@ -1,50 +1,118 @@
-# React + TypeScript + Vite
+# Discovery5
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Only source for many sources. This project is for designers and developers to find the sources for their work, productivity etc....
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## **Why Discovery5?**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Yes, there are many tools like this, but **Discovery5** stands out because:
 
-- Configure the top-level `parserOptions` property like this:
+1. **Simplicity**: It’s designed to be **minimal and modular**, avoiding unnecessary complexity.
+2. **No Gimmicks**: No ads (except for one or two sponsors) and no bloated features.
+3. **Modern Interface**: A clean, intuitive, and customizable UI tailored for today’s users.
+4. **Open Source**: Anyone can contribute, making it a community-driven project.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### **Key Features**
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- **Modular Design**: Pick and choose only the features you need.
+- **Customisable**: Adapt the tool to fit your workflow.
+- **Transparent**: Open-source with a focus on community collaboration.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+---
+
+### **Join Us**
+
+If you’re looking for a simpler, modern, and open-source alternative, **Discovery5** is for you. Contribute, customize, and make it your own!
+
+---
+
+## This version is concise, modular, and highlights the unique value of discovery5. Let me know if you’d like further tweaks! 🚀
+
+# Roadmap for Discovery5
+
+## - Phase 1: Planning & Validation
+- [x] Define Discovery5  
+  - Identify the purpose, target audience, and key goals of the project.  
+- [x] Wireframe Key User Flows  
+  - Sketch out the main workflows, including authentication, search, and course management.  
+- [ ] Validate with Friends  
+  - Present the idea to friends and gather feedback for refinement.
+
+---
+
+## - Phase 2: Design System & Landing Page
+- [ ] Create a Scalable Design System in Figma and share 
+- [ ] Design and Build the Landing Page   
+- [ ] Waitlist Page Integration  
+  - Integrate the waitlist page with PocketBase for collecting user emails.
+- [ ] Test Waitlist Functionality  
+- [ ] Make the Waitlist Public  
+
+---
+
+## - Phase 3: Core Feature Development
+- [ ] Tech Stack Decisions  
+  - Finalise decisions on authentication (e.g., Clerk, OpenAuth, or custom), backend (Node.js or Deno), and database(not sure yet).  
+- [ ] Database Ideation and Design  
+  - Brainstorm and Design schema for the database
+- [ ] Build Authentication Flow   
+- [ ] Design Core Interfaces  
+  - Build interfaces for Home, Authentication, Search, Explore, Add/Request Form, Trending, User Personal Collection etc.  
+- [ ] Code Core Interfaces 
+- [ ] Design and Code the SuperAdmin Panel  
+  - An admin interface for managing users, tools, and requests.  
+
+---
+
+## - Phase 4: Backend Integration
+- [ ] Set Up APIs  
+  - Build backend APIs to support frontend functionality, Node.js (or Deno) and a database like PostgreSQL or Neon.  
+- [ ] Connect Frontend to Backend
+- [ ] Implement Basic Search  
+  - Add search functionality for finding tools
+---
+
+## - Phase 5: Testing & Iteration
+- [ ] Manual Testing  
+- [ ] Invite Beta Testers  
+  - Share the app with beta users and gather detailed feedback.  
+- [ ] Iterate Based on Feedback  
+  - Refine features and fix issues reported during beta testing.
+
+---
+
+## - Phase 6: Launch Prep
+- [ ] Optimise Performance  with experienced developers help
+- [ ] Set Up Monitoring  
+  - Implement monitoring tools to track app performance and user activity.  
+- [ ] Launch Publicly  
+  - Release the application for public use guessing March 31st.
+---
+
+# Tech Stacks
+
+Here’s a **simple table** summarizing the **final tools** and **alternative options** for your project. I’ve categorized them based on your preferences and goals:
+
+| **Category**        | **Final Tool**            | **Alternative Options**                      | **Notes**                                                                |
+| ------------------- | ------------------------- | -------------------------------------------- | ------------------------------------------------------------------------ |
+| **Frontend**        | React + Vite + TypeScript | Next.js, SvelteKit                           | Vite is faster for development; Next.js offers SSR/SEO benefits.         |
+| **UI Library**      | Radix Primitives          | Shadcn UI, Chakra UI, Mantine                | Radix is headless; pair with Tailwind for custom styling.                |
+| **CSS Framework**   | Tailwind CSS              | Styled Components, Emotion, SCSS             | Tailwind is designer-friendly and integrates well with Radix.            |
+| **Authentication**  | Auth.js (NextAuth.js)     | Clerk, Firebase Auth, Supabase Auth          | Auth.js is flexible and supports OAuth providers (GitHub, Google, etc.). |
+| **Database**        | PostgreSQL (self-hosted)  | Supabase, Firebase Firestore, Turso          | PostgreSQL is relational; Supabase adds real-time features.              |
+| **Backend**         | Node.js + Express         | NestJS, Fastify, Serverless (Vercel/Netlify) | Node.js is lightweight; NestJS adds structure for larger apps.           |
+| **Analytics**       | Sentry                    | LogRocket, Plausible, Vercel Analytics       | Sentry is great for error tracking; Plausible is privacy-focused.        |
+| **Admin Dashboard** | Custom (Radix + Tailwind) | Tremor, Refine, Mantine Admin                | Build your own for full control; use prebuilt tools for speed.           |
+| **Deployment**      | Vercel                    | Netlify, Render, Fly.io                      | Vercel integrates seamlessly with React/Vite and offers serverless APIs. |
+| **Component Docs**  | Storybook                 | Docz, Docusaurus                             | Storybook is the industry standard for documenting components.           |
+| **Real-Time**       | Ably                      | Pusher, Socket.IO                            | Ably is scalable and easy to integrate; Socket.IO is self-hostable.      |
+
+
+
+# Features
+I will update this on Sunday 26th January 2025.
+

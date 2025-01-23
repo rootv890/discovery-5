@@ -50,6 +50,7 @@ const WaitlistForm = () => {
           Print("Error", status);
           return;
         }
+        setStatus("success");
         navigate("/thank-you");
       });
     });
