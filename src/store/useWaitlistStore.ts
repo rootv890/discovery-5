@@ -5,8 +5,6 @@ import { Print } from '../utils/utils';
 
 export const pb = new PocketBase( import.meta.env.VITE_PB_URL );
 
-
-
 export const useWaitlistStore = create<WaitlistResponse>( ( set ) => ( {
   // Waitlist data
   waitlist: {
@@ -14,9 +12,7 @@ export const useWaitlistStore = create<WaitlistResponse>( ( set ) => ( {
     name: '',
     newsletter: true,
     role: '',
-  }
-  ,
-
+  },
   // setStatus function to update the status in other components
   setStatus: ( status: 'idle' | 'loading' | 'success' | 'error' ) => {
     set( { status: status } );
@@ -30,7 +26,7 @@ export const useWaitlistStore = create<WaitlistResponse>( ( set ) => ( {
       // Check if the data is valid
       if ( !data.email || !data.name || !data.role ) {
         Print( "Invalid data" );
-        return;
+        return false;
       }
 
       const checkEmail = await pb.collection( 'WaitListUsers' ).getFullList(
@@ -42,7 +38,7 @@ export const useWaitlistStore = create<WaitlistResponse>( ( set ) => ( {
       if ( checkEmail.length > 0 ) {
         Print( "Email already exists" );
         set( ( state ) => ( { ...state, status: 'error' } ) );
-        return;
+        return false;
       }
       // Check if the email is already in the waitlist
 
@@ -50,9 +46,11 @@ export const useWaitlistStore = create<WaitlistResponse>( ( set ) => ( {
       await pb.collection( 'WaitListUsers' ).create( data );
       set( { waitlist: data } );
       Print( "Successfully created waitlist" );
+      return true;
 
     } catch ( error ) {
       Print( "Error creating waitlist", error );
+      return false;
     }
   },
 

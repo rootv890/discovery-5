@@ -1,11 +1,12 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { set, SubmitHandler, useForm } from "react-hook-form";
 
 import { useNavigate } from "react-router";
 import { TbLoader2 } from "react-icons/tb";
 import { useWaitlistStore } from "../../../store/useWaitlistStore";
 import TextInput from "../../../components/ui/TextInput";
-import { cn } from "../../../utils/utils";
+import { cn, Print, wait } from "../../../utils/utils";
 import FormError from "../../../components/FormError";
+import { useState } from "react";
 
 type WaitlistForm = {
   email: string;
@@ -15,10 +16,12 @@ type WaitlistForm = {
 };
 
 const WaitlistForm = () => {
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "error" | "success"
+  >("idle");
+
   const navigate = useNavigate();
   const createWaitlist = useWaitlistStore((state) => state.createWaitlist);
-  const status = useWaitlistStore((state) => state.status);
-  const setStatus = useWaitlistStore((state) => state.setStatus)!;
 
   // Form Props
   const {
@@ -40,20 +43,19 @@ const WaitlistForm = () => {
     setStatus("loading");
     wait(2000).then(async () => {
       try {
-        await createWaitlist(data);
-      } catch (error) {
-        setStatus("error");
-        throw new Error("Email already exists");
-      }
-
-      wait(1000).then(() => {
-        if (status !== "error") {
-          Print("Error", status);
-          return;
+        const dataStatus = await createWaitlist(data);
+        // @ts-nocheck it will reutrn a boolean
+        if (dataStatus) {
+          setStatus("success");
+          navigate("/thank-you");
+        } else {
+          throw new Error("Something went wrong");
         }
-        setStatus("success");
-        navigate("/thank-you");
-      });
+      } catch (error) {
+        Print("Error", error);
+        setStatus("error");
+        throw new Error("Something went wrong");
+      }
     });
   };
 
@@ -63,7 +65,6 @@ const WaitlistForm = () => {
       shadow-card-lg
     "
     >
-      {status}
       <div className="flex gap-1 flex-col ">
         <h1 className="text-h4 font-sans font-bold tracking-wider text-foreground flex items-center gap-1 ">
           Join Discovery5{" "}

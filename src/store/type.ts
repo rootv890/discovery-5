@@ -9,7 +9,7 @@ export interface WaitlistEntryData {
 
 export interface WaitlistResponse {
   waitlist: WaitlistEntryData;
-  createWaitlist: ( { email, name, newsletter, role }: WaitlistEntryData ) => void;
+  createWaitlist: ( { email, name, newsletter, role }: WaitlistEntryData ) => boolean;
   status?: 'idle' | 'loading' | 'success' | 'error';
   setStatus?: ( status: 'idle' | 'loading' | 'success' | 'error' ) => void;
 }
