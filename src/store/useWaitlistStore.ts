@@ -1,20 +1,13 @@
 import PocketBase from 'pocketbase';
-import { WaitlistCollection } from './type';
+import { WaitlistEntryData, WaitlistResponse } from './type';
 import { create } from 'zustand/react';
-import { Print } from '../utiils/utils';
-
+import { Print } from '../utils/utils';
 
 export const pb = new PocketBase( import.meta.env.VITE_PB_URL );
 
 
-interface WaitlistReturns {
-  waitlist: WaitlistCollection;
-  createWaitlist: ( { email, name, newsletter, role }: WaitlistCollection ) => void;
-  status?: 'idle' | 'loading' | 'success' | 'error';
-  setStatus?: ( status: 'idle' | 'loading' | 'success' | 'error' ) => void;
-}
 
-export const useCreateWaitlist = create<WaitlistReturns>( ( set ) => ( {
+export const useWaitlistStore = create<WaitlistResponse>( ( set ) => ( {
   // Waitlist data
   waitlist: {
     email: '',
@@ -30,7 +23,7 @@ export const useCreateWaitlist = create<WaitlistReturns>( ( set ) => ( {
   },
 
   // createWaitlist function
-  createWaitlist: async ( data: WaitlistCollection ) => {
+  createWaitlist: async ( data: WaitlistEntryData ) => {
 
     try {
 

@@ -1,10 +1,11 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useCreateWaitlist } from "../store/useCreateWaitlist";
-import FormError from "../components/FormError";
-import TextInput from "../components/ui/TextInput";
-import { cn, Print, wait } from "../utiils/utils";
+
 import { useNavigate } from "react-router";
 import { TbLoader2 } from "react-icons/tb";
+import { useWaitlistStore } from "../../../store/useWaitlistStore";
+import TextInput from "../../../components/ui/TextInput";
+import { cn } from "../../../utils/utils";
+import FormError from "../../../components/FormError";
 
 type WaitlistForm = {
   email: string;
@@ -15,9 +16,9 @@ type WaitlistForm = {
 
 const WaitlistForm = () => {
   const navigate = useNavigate();
-  const createWaitlist = useCreateWaitlist((state) => state.createWaitlist);
-  const status = useCreateWaitlist((state) => state.status);
-  const setStatus = useCreateWaitlist((state) => state.setStatus)!;
+  const createWaitlist = useWaitlistStore((state) => state.createWaitlist);
+  const status = useWaitlistStore((state) => state.status);
+  const setStatus = useWaitlistStore((state) => state.setStatus)!;
 
   // Form Props
   const {

@@ -1,3 +1,4 @@
+// TODO Fetch From Database in the future
 export const heroIllustrations: { url: string, identifier: string; }[] = [
   {
     url: "web@2x.png",

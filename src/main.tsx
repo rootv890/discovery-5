@@ -7,10 +7,12 @@ import App from "./App.tsx";
 import RootLayout from "./RootLayout.tsx";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router";
-import LandingPage from "./pages/LandingPage.tsx";
-import WaitlistPage from "./pages/WaitlistPage.tsx";
-import MarketingPage from "./pages/MarketingPage.tsx";
-import ThankYouPage from "./pages/ThankYouPage.tsx";
+
+import WaitlistPage from "./pages/Landing/Waitlist/page.tsx";
+
+import ThankYouPage from "./pages/Landing/ThankYouPage.tsx";
+import LandingPage from "./pages/Landing/page.tsx";
+import LandingLayout from "./pages/Landing/layout.tsx";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <MarketingPage />, // Has marketing navbar and outlet
+        element: <LandingLayout />, // Has marketing navbar and outlet
         children: [
           {
             path: "waitlist",

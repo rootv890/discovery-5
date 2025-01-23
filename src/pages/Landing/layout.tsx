@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
-import MarketingNav from "../components/MarketingNav";
+import MarketingNav from "../../components/MarketingNav";
 
-const MarketingPage = () => {
+const LandingLayout = () => {
   return (
     <div className="w-full h-screen relative  mx-auto bg-background flex flex-col">
       <MarketingNav />
@@ -12,4 +12,4 @@ const MarketingPage = () => {
   );
 };
 
-export default MarketingPage;
+export default LandingLayout;

@@ -1,12 +1,12 @@
-import { GhostButton, PrimaryButton } from "../components/Buttons";
-import { heroIllustrations } from "../data/data";
-import { randomRotate } from "../utiils/utils";
-
+import { heroIllustrations } from "../../data/data";
+import { randomRotate } from "../../utils/utils";
 import { Link } from "react-router";
+//TODO Replace with custom built Radix Button component later
+import { GhostButton, PrimaryButton } from "../../components/Buttons";
 
 const LandingPage = () => {
   return (
-    <section className="w-full min-h-screen  bg-background flex flex-col items-center  pb-8  ">
+    <section className="w-full  bg-background flex flex-col items-center  pb-8  ">
       <div className="h-full my-auto flex flex-col justify-center items-center">
         <div
           className="  flex flex-col items-center justify-center md:mt-8
