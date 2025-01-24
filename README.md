@@ -30,8 +30,6 @@ If you’re looking for a simpler, modern, and open-source alternative, **Discov
 
 ---
 
-## This version is concise, modular, and highlights the unique value of discovery5. Let me know if you’d like further tweaks! 🚀
-
 # Roadmap for Discovery5
 
 ## - Phase 1: Planning & Validation
