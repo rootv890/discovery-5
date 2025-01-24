@@ -1,5 +1,4 @@
 import { Link } from "react-router";
-import { marketingNavItems } from "../data/data";
 import { PrimaryButton } from "./Buttons";
 
 const MarketingNav = () => {
