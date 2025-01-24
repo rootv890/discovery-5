@@ -59,5 +59,12 @@ export const svgIllustrations: Record<string, IllustrationType> = {
       url: "requesting-hand.svg",
       alt: "Web UI floating illustration",
     }
-  }
+  },
+  thankYouIllustrations: {
+    thankYou: {
+      url: "thank-you.svg",
+      alt: "Thank you illustration",
+    }
+  },
+
 };
