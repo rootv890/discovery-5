@@ -106,8 +106,8 @@
 
 @media (prefers-scheme: dark) {
   :root {
-    --secondary: #06243a;
-    --foreground: #e8f5ff;
+    --secondary: #e8f5ff;
+    --foreground: #06243a;
   }
 }
 

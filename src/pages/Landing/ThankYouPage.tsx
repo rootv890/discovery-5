@@ -3,8 +3,8 @@ import { useNavigate } from "react-router";
 const ThankYouPage = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col items-center bg-fainted w-fit mx-auto p-6 rounded-2xl justify-center gap-6 text-center form-shadow">
-      <div className="w-[30vw] mt-8">
+    <div className="flex flex-col items-center bg-fainted w-fit mx-auto p-8 rounded-2xl justify-center gap-6 m-6  text-center form-shadow">
+      <div className="w-full max-w-[312px] mt-8">
         <img src={`/illustrations/thank-you.svg`} alt="" />
       </div>
 
