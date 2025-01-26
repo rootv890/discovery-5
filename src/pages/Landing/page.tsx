@@ -3,10 +3,28 @@ import { randomRotate } from "../../utils/utils";
 import { Link } from "react-router";
 //TODO Replace with custom built Radix Button component later
 import { GhostButton, PrimaryButton } from "../../components/Buttons";
+import {
+  useWaitlistStoreBeta,
+  WaitlistEntryData,
+} from "../../store/useWaitlistStore_beta";
 
 const LandingPage = () => {
+  const createWaitlist = useWaitlistStoreBeta((state) => state.createWaitlist);
+
+  const handleClick = () => {
+    const testData: WaitlistEntryData = {
+      email: "test@EMAIL.com",
+      name: "Pruthviraj",
+      role: "developer",
+      newsletter: true,
+    };
+
+    createWaitlist(testData);
+  };
+
   return (
     <section className="w-full  bg-background flex flex-col items-center  pb-8  ">
+      <button onClick={handleClick}>TEST</button>
       <div className="h-full my-auto flex flex-col justify-center items-center">
         <div
           className="  flex flex-col items-center justify-center md:mt-8

@@ -1,0 +1,1 @@
+ALTER TABLE "waitlist" ALTER COLUMN "email" SET DATA TYPE varchar(64);

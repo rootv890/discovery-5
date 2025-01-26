@@ -13,3 +13,9 @@ export interface WaitlistResponse {
   status?: 'idle' | 'loading' | 'success' | 'error';
   setStatus?: ( status: 'idle' | 'loading' | 'success' | 'error' ) => void;
 }
+
+
+export interface WaitlistResponse_Beta {
+  waitlist: WaitlistEntryData;
+  createWaitlist: ( { email, name, newsletter, role }: WaitlistEntryData ) => Promise<boolean>;
+}
