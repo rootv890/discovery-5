@@ -2,16 +2,20 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { useNavigate } from "react-router";
 import { TbLoader2 } from "react-icons/tb";
-import { useWaitlistStore } from "../../../store/useWaitlistStore";
 import TextInput from "../../../components/ui/TextInput";
-import { cn, Print, wait } from "../../../utils/utils";
+import { capitalize, cn, Print, wait } from "../../../utils/utils";
 import FormError from "../../../components/FormError";
 import { useState } from "react";
+import {
+  WaitlistUserRoles,
+  WaitlistUserRoleType,
+} from "../../../drizzle/schema";
+import { useWaitlistStore } from "../../../store/useWaitlistStore";
 
 type WaitlistForm = {
   email: string;
   name: string;
-  role: "developer" | "designer" | "both";
+  role: WaitlistUserRoleType;
   newsletter: boolean;
 };
 
@@ -127,9 +131,11 @@ const WaitlistForm = () => {
             className="inline-flex h-[35px] w-full appearance-none items-center justify-center rounded bg-background px-2.5 text-[15px] leading-none text-foreground   ring-0 selection:bg-foreground selection:text-background focus-visible:ring-2 focus:outline outline-blue-600 focus:outline-2 select-none"
             {...register("role", { required: true })}
           >
-            <option value="developer">Developer</option>
-            <option value="designer">Designer</option>
-            <option value="both">Both</option>
+            {WaitlistUserRoles.enumValues.map((role, index) => (
+              <option key={index} value={role}>
+                {capitalize(role)}
+              </option>
+            ))}
           </select>
           {errors.role && <p>Role is required</p>}
         </div>
