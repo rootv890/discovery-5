@@ -1,60 +1,78 @@
-import PocketBase from 'pocketbase';
-import { WaitlistEntryData, WaitlistResponse } from './type';
-import { create } from 'zustand/react';
+import { create } from 'zustand';
+import { NewsletterPreference, WaitlistUserRoleType, WaitlistUserTable } from '../drizzle/schema';
 import { Print } from '../utils/utils';
+import { db } from '../db';
 
-export const pb = new PocketBase( import.meta.env.VITE_PB_URL );
 
-export const useWaitlistStore = create<WaitlistResponse>( ( set ) => ( {
-  // Waitlist data
-  waitlist: {
-    email: '',
-    name: '',
-    newsletter: true,
-    role: '',
-  },
-  // setStatus function to update the status in other components
-  setStatus: ( status: 'idle' | 'loading' | 'success' | 'error' ) => {
-    set( { status: status } );
-  },
+export interface WaitlistEntryData {
+  name: string;
+  email: string;
+  role: WaitlistUserRoleType;
+  newsletter: boolean;
+}
 
-  // createWaitlist function
-  createWaitlist: async ( data: WaitlistEntryData ): Promise<boolean> => {
+export interface WaitlistResponse {
+  waitlist: WaitlistEntryData;
+  createWaitlist: ( { email, name, newsletter, role }: WaitlistEntryData ) => Promise<boolean>;
+}
 
-    try {
 
-      // Check if the data is valid
-      if ( !data.email || !data.name || !data.role ) {
-        Print( "Invalid data" );
-        return false;
-      }
+export const useWaitlistStore = create<WaitlistResponse>( ( set ): WaitlistResponse => {
 
-      const checkEmail = await pb.collection( 'WaitListUsers' ).getFullList(
-        {
-          filter: `email="${ data.email }"`
-        }
-      );
 
-      if ( checkEmail.length > 0 ) {
-        Print( "Email already exists" );
-        set( ( state ) => ( { ...state, status: 'error' } ) );
-        return false;
-      }
-      // Check if the email is already in the waitlist
+  return {
 
-      // Create a new document in the 'WaitListUsers' collection
-      await pb.collection( 'WaitListUsers' ).create( data );
-      set( { waitlist: data } );
-      Print( "Successfully created waitlist" );
-      return true;
-
-    } catch ( error ) {
-      Print( "Error creating waitlist", error );
-      return false;
+    // Default values
+    waitlist: {
+      email: '',
+      name: '',
+      newsletter: false,
+      role: 'designer'
     }
-  },
 
-  // Status of the waitlist
-  status: 'idle',
+    ,
+    createWaitlist: async ( data: WaitlistEntryData ): Promise<boolean> => {
+      // check data validation
+      try {
+        if ( !data.email || !data.name || !data.role ) {
+          Print( "Invalid data" );
+          return false;
+        }
 
-} ) );
+        // check email duplication
+
+        // add to database
+        const user = await db.insert( WaitlistUserTable ).values( {
+          email: data.email,
+          name: data.name,
+          role: data.role,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        } ).returning( {
+          id: WaitlistUserTable.id,
+        } );
+
+        // add newsletter preference
+        if ( user.length === 0 ) {
+          Print( "Error adding user" );
+          return false;
+        }
+
+        await db.insert( NewsletterPreference ).values( {
+          userId: user[ 0 ].id,
+          newsletter: data.newsletter
+        } );
+
+        // set the waitlist
+        set( { waitlist: data } );
+
+        return true;
+      } catch ( error ) {
+        Print( error );
+        return false;
+      }
+    }
+
+  };
+
+} );

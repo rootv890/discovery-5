@@ -2,7 +2,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { useNavigate } from "react-router";
 import { TbLoader2 } from "react-icons/tb";
-import { useWaitlistStore } from "../../../store/useWaitlistStore";
 import TextInput from "../../../components/ui/TextInput";
 import { capitalize, cn, Print, wait } from "../../../utils/utils";
 import FormError from "../../../components/FormError";
@@ -11,7 +10,7 @@ import {
   WaitlistUserRoles,
   WaitlistUserRoleType,
 } from "../../../drizzle/schema";
-import { useWaitlistStoreBeta } from "../../../store/useWaitlistStore_beta";
+import { useWaitlistStore } from "../../../store/useWaitlistStore";
 
 type WaitlistForm = {
   email: string;
@@ -26,7 +25,7 @@ const WaitlistForm = () => {
   >("idle");
 
   const navigate = useNavigate();
-  const createWaitlist = useWaitlistStoreBeta((state) => state.createWaitlist);
+  const createWaitlist = useWaitlistStore((state) => state.createWaitlist);
 
   // Form Props
   const {
