@@ -2,7 +2,6 @@
 
 Only source for many sources. This project is for designers and developers to find the sources for their work, productivity etc....
 
-
 ---
 
 ## **Why Discovery5?**
@@ -33,62 +32,70 @@ If you’re looking for a simpler, modern, and open-source alternative, **Discov
 # Roadmap for Discovery5
 
 ## - Phase 1: Planning & Validation
-- [x] Define Discovery5  
-  - Identify the purpose, target audience, and key goals of the project.  
-- [x] Wireframe Key User Flows  
-  - Sketch out the main workflows, including authentication, search, and course management.  
-- [ ] Validate with Friends  
+
+- [x] Define Discovery5
+  - Identify the purpose, target audience, and key goals of the project.
+- [x] Wireframe Key User Flows
+  - Sketch out the main workflows, including authentication, search, and course management.
+- [ ] Validate with Friends
   - Present the idea to friends and gather feedback for refinement.
 
 ---
 
 ## - Phase 2: Design System & Landing Page
-- [ ] Create a Scalable Design System in Figma and share 
-- [ ] Design and Build the Landing Page   
-- [ ] Waitlist Page Integration  
+
+- [ ] Create a Scalable Design System in Figma and share
+- [ ] Design and Build the Landing Page
+- [ ] Waitlist Page Integration
   - Integrate the waitlist page with PocketBase for collecting user emails.
-- [ ] Test Waitlist Functionality  
-- [ ] Make the Waitlist Public  
+- [ ] Test Waitlist Functionality
+- [ ] Make the Waitlist Public
 
 ---
 
 ## - Phase 3: Core Feature Development
-- [ ] Tech Stack Decisions  
-  - Finalise decisions on authentication (e.g., Clerk, OpenAuth, or custom), backend (Node.js or Deno), and database(not sure yet).  
-- [ ] Database Ideation and Design  
+
+- [ ] Tech Stack Decisions
+  - Finalise decisions on authentication (e.g., Clerk, OpenAuth, or custom), backend (Node.js or Deno), and database(not sure yet).
+- [ ] Database Ideation and Design
   - Brainstorm and Design schema for the database
-- [ ] Build Authentication Flow   
-- [ ] Design Core Interfaces  
-  - Build interfaces for Home, Authentication, Search, Explore, Add/Request Form, Trending, User Personal Collection etc.  
-- [ ] Code Core Interfaces 
-- [ ] Design and Code the SuperAdmin Panel  
-  - An admin interface for managing users, tools, and requests.  
+- [ ] Build Authentication Flow
+- [ ] Design Core Interfaces
+  - Build interfaces for Home, Authentication, Search, Explore, Add/Request Form, Trending, User Personal Collection etc.
+- [ ] Code Core Interfaces
+- [ ] Design and Code the SuperAdmin Panel
+  - An admin interface for managing users, tools, and requests.
 
 ---
 
 ## - Phase 4: Backend Integration
-- [ ] Set Up APIs  
-  - Build backend APIs to support frontend functionality, Node.js (or Deno) and a database like PostgreSQL or Neon.  
+
+- [ ] Set Up APIs
+  - Build backend APIs to support frontend functionality, Node.js (or Deno) and a database like PostgreSQL or Neon.
 - [ ] Connect Frontend to Backend
-- [ ] Implement Basic Search  
+- [ ] Implement Basic Search
   - Add search functionality for finding tools
+
 ---
 
 ## - Phase 5: Testing & Iteration
-- [ ] Manual Testing  
-- [ ] Invite Beta Testers  
-  - Share the app with beta users and gather detailed feedback.  
-- [ ] Iterate Based on Feedback  
+
+- [ ] Manual Testing
+- [ ] Invite Beta Testers
+  - Share the app with beta users and gather detailed feedback.
+- [ ] Iterate Based on Feedback
   - Refine features and fix issues reported during beta testing.
 
 ---
 
 ## - Phase 6: Launch Prep
-- [ ] Optimise Performance  with experienced developers help
-- [ ] Set Up Monitoring  
-  - Implement monitoring tools to track app performance and user activity.  
-- [ ] Launch Publicly  
+
+- [ ] Optimise Performance with experienced developers help
+- [ ] Set Up Monitoring
+  - Implement monitoring tools to track app performance and user activity.
+- [ ] Launch Publicly
   - Release the application for public use guessing March 31st.
+
 ---
 
 # Tech Stacks
@@ -109,8 +116,20 @@ Here’s a **simple table** summarizing the **final tools** and **alternative op
 | **Component Docs**  | Storybook                 | Docz, Docusaurus                             | Storybook is the industry standard for documenting components.           |
 | **Real-Time**       | Ably                      | Pusher, Socket.IO                            | Ably is scalable and easy to integrate; Socket.IO is self-hostable.      |
 
-
-
 # Features
+
 I will update this on Sunday 26th January 2025.
 
+# ChangeLog
+
+## January 24, 2024
+
+- **Database Migration**: Switched from PocketBase to NeonDB with DrizzleORM
+
+  - Better type safety with DrizzleORM
+  - Easy and free tier is avaliable
+
+- **Analytics Integration**: Added Vercel Analytics
+  - Temporary solution for basic usage tracking
+  - Zero-configuration setup
+  - Note: Will migrate to Sentry once MVP is ready for enhanced error tracking and monitoring
