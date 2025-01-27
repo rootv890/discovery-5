@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 
 const RootLayout = () => {
   return (
-    <div className="bg-background">
+    <div className="">
       {/* <h1>Root Layout</h1> */}
       <Outlet />
     </div>
