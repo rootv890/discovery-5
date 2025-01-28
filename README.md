@@ -37,7 +37,7 @@ If you’re looking for a simpler, modern, and open-source alternative, **Discov
   - Identify the purpose, target audience, and key goals of the project.
 - [x] Wireframe Key User Flows
   - Sketch out the main workflows, including authentication, search, and course management.
-- [ ] Validate with Friends
+- [x] Validate with Friends
   - Present the idea to friends and gather feedback for refinement.
 
 ---
@@ -57,7 +57,7 @@ If you’re looking for a simpler, modern, and open-source alternative, **Discov
 
 - [ ] Tech Stack Decisions
   - Finalise decisions on authentication (e.g., Clerk, OpenAuth, or custom), backend (Node.js or Deno), and database(not sure yet).
-- [ ] Database Ideation and Design
+- [x] Database Ideation and Design
   - Brainstorm and Design schema for the database
 - [ ] Build Authentication Flow
 - [ ] Design Core Interfaces
@@ -133,3 +133,7 @@ I will update this on Sunday 26th January 2025.
   - Temporary solution for basic usage tracking
   - Zero-configuration setup
   - Note: Will migrate to Sentry once MVP is ready for enhanced error tracking and monitoring
+
+## January 28, 2024
+- **Database Design**: ERD representation of the Project's DB
+
