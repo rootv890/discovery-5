@@ -44,12 +44,12 @@ If you’re looking for a simpler, modern, and open-source alternative, **Discov
 
 ## - Phase 2: Design System & Landing Page
 
-- [ ] Create a Scalable Design System in Figma and share
-- [ ] Design and Build the Landing Page
-- [ ] Waitlist Page Integration
+- [ ] Create a Scalable Design System in Figma and share (creating...)
+- [x] Design and Build the Landing Page
+- [x] Waitlist Page Integration
   - Integrate the waitlist page with PocketBase for collecting user emails.
-- [ ] Test Waitlist Functionality
-- [ ] Make the Waitlist Public
+- [x] Test Waitlist Functionality
+- [x] Make the Waitlist Public [Click here](https://www.prootv.pro)
 
 ---
 
@@ -59,6 +59,8 @@ If you’re looking for a simpler, modern, and open-source alternative, **Discov
   - Finalise decisions on authentication (e.g., Clerk, OpenAuth, or custom), backend (Node.js or Deno), and database(not sure yet).
 - [x] Database Ideation and Design
   - Brainstorm and Design schema for the database
+- [ ] Build Database
+  - Build the database using the designed schema
 - [ ] Build Authentication Flow
 - [ ] Design Core Interfaces
   - Build interfaces for Home, Authentication, Search, Explore, Add/Request Form, Trending, User Personal Collection etc.
@@ -135,5 +137,9 @@ I will update this on Sunday 26th January 2025.
   - Note: Will migrate to Sentry once MVP is ready for enhanced error tracking and monitoring
 
 ## January 28, 2024
+
 - **Database Design**: ERD representation of the Project's DB
 
+## January 29, 2024
+
+- **Database Schema**: Updated DB schema with new tables and relationships
