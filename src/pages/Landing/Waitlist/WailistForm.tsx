@@ -7,7 +7,7 @@ import { capitalize, cn, Print, wait } from "../../../utils/utils";
 import FormError from "../../../components/FormError";
 import { useState } from "react";
 import {
-  WaitlistUserRoles,
+  waitlistUserRolesEnum,
   WaitlistUserRoleType,
 } from "../../../drizzle/schema";
 import { useWaitlistStore } from "../../../store/useWaitlistStore";
@@ -131,7 +131,7 @@ const WaitlistForm = () => {
             className="inline-flex h-[35px] w-full appearance-none items-center justify-center rounded bg-background px-2.5 text-[15px] leading-none text-foreground   ring-0 selection:bg-foreground selection:text-background focus-visible:ring-2 focus:outline outline-blue-600 focus:outline-2 select-none"
             {...register("role", { required: true })}
           >
-            {WaitlistUserRoles.enumValues.map((role, index) => (
+            {waitlistUserRolesEnum.enumValues.map((role, index) => (
               <option key={index} value={role}>
                 {capitalize(role)}
               </option>

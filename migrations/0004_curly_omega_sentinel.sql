@@ -1,0 +1,1 @@
+ALTER TABLE "comment" ALTER COLUMN "parent_id" SET DATA TYPE uuid;
