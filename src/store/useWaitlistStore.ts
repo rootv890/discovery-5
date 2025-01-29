@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { NewsletterPreference, WaitlistUserRoleType, WaitlistUserTable } from '../drizzle/schema';
+import { newsletterPreference, WaitlistUserRoleType, waitlistUserTable } from '../drizzle/schema';
 import { Print } from '../utils/utils';
 import { db } from '../db';
 
@@ -42,14 +42,14 @@ export const useWaitlistStore = create<WaitlistResponse>( ( set ): WaitlistRespo
         // check email duplication
 
         // add to database
-        const user = await db.insert( WaitlistUserTable ).values( {
+        const user = await db.insert( waitlistUserTable ).values( {
           email: data.email,
           name: data.name,
           role: data.role,
           createdAt: new Date(),
           updatedAt: new Date()
         } ).returning( {
-          id: WaitlistUserTable.id,
+          id: waitlistUserTable.id,
         } );
 
         // add newsletter preference
@@ -58,7 +58,7 @@ export const useWaitlistStore = create<WaitlistResponse>( ( set ): WaitlistRespo
           return false;
         }
 
-        await db.insert( NewsletterPreference ).values( {
+        await db.insert( newsletterPreference ).values( {
           userId: user[ 0 ].id,
           newsletter: data.newsletter
         } );
