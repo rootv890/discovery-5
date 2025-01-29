@@ -1,5 +1,5 @@
-import { eq, relations, sql } from "drizzle-orm";
-import { AnyPgColumn, boolean, integer, jsonb, pgEnum, pgTable, primaryKey, serial, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
+import { relations, sql } from "drizzle-orm";
+import { boolean, jsonb, pgEnum, pgTable, primaryKey, serial, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
 
 /**
  * Enums
@@ -196,6 +196,7 @@ export const toolCategoryPlatform = pgTable( 'tool_category_platform', {
   createdAt: timestamp( 'created_at' ).defaultNow(),
   updatedAt: timestamp( 'updated_at' ).defaultNow(),
 },
+
   /**
     ✅ Figma (Tool) + UI Design (Category) + Web (Platform)
     ✅ Figma (Tool) + UI Design (Category) + Mobile (Platform)
@@ -231,8 +232,8 @@ export const comments = pgTable( "comment", {
   userId: uuid( "user_id" )
     .references( () => users.id, { onDelete: "cascade" } )
     .notNull(),
-  parentId: integer( "parent_id" ).references( (): AnyPgColumn => comments.id, { onDelete: "cascade" } ), // for nested comments
-
+  // parentId: uuid( "parent_id" )
+  // .references( (): AnyPgColumn => comments.id, { onDelete: "cascade" } ),
   toolId: uuid( "tool_id" )
     .references( () => tools.id, { onDelete: "cascade" } )
     .notNull(),
@@ -399,7 +400,7 @@ export const voteRelations = relations( votes, ( { one } ) => {
 export const commentRelations = relations( comments, ( { one, many } ) => ( {
   user: one( users, { fields: [ comments.userId ], references: [ users.id ] } ),
   tool: one( tools, { fields: [ comments.toolId ], references: [ tools.id ] } ),
-  parentComment: one( comments, { fields: [ comments.parentId ], references: [ comments.id ] } ), // ✅ Parent-Child Relation
+  // parentComment: one( comments, { fields: [ comments.parentId ], references: [ comments.id ] } ), // ✅ Parent-Child Relation
   childComments: many( comments ), // ✅ Replies
 } ) );
 
@@ -441,7 +442,3 @@ export const SelectCommentType = comments.$inferSelect;
 // Votes
 export const NewVoteType = votes.$inferInsert;
 export const SelectVoteType = votes.$inferSelect;
-
-
-// Indexes
-export const idxToolsApproved = uniqueIndex( "idx_tools_approved" ).on( tools.id ).where( eq( tools.isApproved, true ) );

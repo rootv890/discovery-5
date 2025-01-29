@@ -8,8 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "db:generate": "npx drizzle-kit generate",
-    "db:migrate": "npx drizzle-kit migrate"
+    "gen": "npx drizzle-kit generate",
+    "mig": "npx drizzle-kit migrate",
+    "push": "npx drizzle-kit push"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
