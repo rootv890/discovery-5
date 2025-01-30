@@ -92,6 +92,7 @@ export const categories = pgTable( "categories", {
 } );
 
 
+
 export const tools = pgTable( "tools", {
   id: uuid( "id" ).primaryKey().defaultRandom(),
   name: varchar( "name", { length: 256 } ).notNull().unique(),

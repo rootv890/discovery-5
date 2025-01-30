@@ -1,1 +1,0 @@
-ALTER TABLE "waitlist" ALTER COLUMN "id" SET DEFAULT gen_random_uuid();
