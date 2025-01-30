@@ -143,3 +143,8 @@ I will update this on Sunday 26th January 2025.
 ## January 29, 2024
 
 - **Database Schema**: Updated DB schema with new tables and relationships
+
+## January 30, 2024
+
+- Trasnfer Frontend in separate directory
+- Create Backend directory - techstack Fastify + TypeScript
