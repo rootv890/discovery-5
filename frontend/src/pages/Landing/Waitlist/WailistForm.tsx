@@ -23,6 +23,10 @@ const WaitlistForm = () => {
     "idle" | "loading" | "error" | "success"
   >("idle");
 
+  const waitlistMaintaineceStatus = useWaitlistStore(
+    (state) => state.isWaitlistMaintenanceActive
+  );
+
   const navigate = useNavigate();
   const createWaitlist = useWaitlistStore((state) => state.createWaitlist);
 
@@ -61,6 +65,32 @@ const WaitlistForm = () => {
       }
     });
   };
+
+  if (waitlistMaintaineceStatus) {
+    return (
+      <div
+        className="w-fit bg-fainted animate-fade-up px-8 py-12 rounded-2xl z-10
+      shadow-card-lg
+    "
+      >
+        <div className="flex gap-1 flex-col ">
+          <h1 className="text-h4 font-sans font-bold tracking-wider text-foreground flex items-center gap-1 ">
+            Join Discovery5{" "}
+            <span className=" font-medium leading-tight bg-foreground text-background p-1 rounded-full text-xs px-2 select-none">
+              waitlist
+            </span>
+          </h1>
+          <p className="text-body  text-balance  leading-tight text-muted">
+            Join the waitlist and get updates on development
+          </p>
+        </div>
+        <div className="bg-orange-100  mt-6 text-orange-700  px-3 mb-4 shadow-lg  py-2 rounded-full flex items-center gap-2 justify-center">
+          <div className="bg-orange-400 rounded-full size-3"></div> Currently
+          under maintainence
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

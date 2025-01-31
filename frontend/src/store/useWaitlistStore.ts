@@ -14,6 +14,9 @@ export interface WaitlistEntryData {
 export interface WaitlistResponse {
   waitlist: WaitlistEntryData;
   createWaitlist: ( { email, name, newsletter, role }: WaitlistEntryData ) => Promise<boolean>;
+  isWaitlistMaintenanceActive?: boolean;
+  setWaitlistMaintenanceActive?: ( isActive: boolean ) => void;
+
 }
 
 
@@ -21,6 +24,12 @@ export const useWaitlistStore = create<WaitlistResponse>( ( set ): WaitlistRespo
 
 
   return {
+
+    isWaitlistMaintenanceActive: true,
+    // this is so silly man
+    setWaitlistMaintenanceActive: ( isActive: boolean ) => {
+      set( { isWaitlistMaintenanceActive: isActive } );
+    },
 
     // Default values
     waitlist: {
@@ -40,7 +49,6 @@ export const useWaitlistStore = create<WaitlistResponse>( ( set ): WaitlistRespo
         }
 
         // check email duplication
-
         // add to database
         const user = await db.insert( waitlistUserTable ).values( {
           email: data.email,

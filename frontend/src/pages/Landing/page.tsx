@@ -3,15 +3,30 @@ import { randomRotate } from "../../utils/utils";
 import { Link } from "react-router";
 //TODO Replace with custom built Radix Button component later
 import { GhostButton, PrimaryButton } from "../../components/Buttons";
+import { useWaitlistStore } from "../../store/useWaitlistStore";
 
 const LandingPage = () => {
+  const waitlistMaintaineceStatus = useWaitlistStore(
+    (state) => state.isWaitlistMaintenanceActive
+  );
+
   return (
-    <section className="w-full  bg-background flex flex-col items-center  pb-8  ">
+    <section className="w-full h-full p-6 bg-background flex flex-col items-center  pb-8  ">
       <div className="h-full my-auto flex flex-col justify-center items-center">
         <div
           className="  flex flex-col items-center justify-center md:mt-8
      "
         >
+          {
+            // Show waitlist maintenance message
+            waitlistMaintaineceStatus && (
+              <div className="bg-orange-100 text-orange-700  px-3 mb-4 shadow-lg  py-2 rounded-full flex items-center gap-2 justify-center">
+                <div className="bg-orange-400 rounded-full size-3"></div>{" "}
+                Currently under maintainence
+              </div>
+            )
+          }
+
           <h1 className="display ">Discover To</h1>
           {/* images */}
 
@@ -45,10 +60,19 @@ const LandingPage = () => {
           </p>
           <Link to={"/waitlist"}>
             {" "}
-            <PrimaryButton>Join the Waitlist</PrimaryButton>
+            <PrimaryButton disabled={waitlistMaintaineceStatus}>
+              Join the Waitlist
+            </PrimaryButton>
           </Link>
           <p>
-            Wanna contribute? <GhostButton>Click here</GhostButton>
+            Wanna contribute?{" "}
+            <GhostButton
+              onClick={() => {
+                alert("This feature is not available yet");
+              }}
+            >
+              Click here
+            </GhostButton>
           </p>
         </div>
       </div>
