@@ -1,0 +1,1 @@
+ALTER TABLE "tool_tags" ALTER COLUMN "tag_id" SET NOT NULL;
