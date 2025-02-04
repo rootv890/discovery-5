@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { FastifyRequest } from 'fastify';
+import { Request } from 'express';
 
 const SALT = 10;
 
@@ -11,17 +11,36 @@ export const verifyPassword = async ( password: string, hashedPassword: string )
   return await bcrypt.compare( password, hashedPassword );
 };
 
-
-
 // required Fields
-export const requiredFieldsCheck = ( { fields, body }: { fields: Array<string>; body: FastifyRequest[ 'body' ]; } ): void => {
-  const requiredFields = fields;
-  requiredFields.forEach( ( field ) => {
-    if ( !body || !( field in ( body as Record<string, unknown> ) ) ) {
-      throw new Error( `${ field } is required` );
+export const requiredFieldsCheck = ( {
+  fields,
+  body,
+}: {
+  fields: string[];
+  body: Request[ 'body' ];
+} ): Error | null => {
+  for ( const field of fields ) {
+    if ( !body || !( field in body ) ) {
+      return new Error( `${ field } is required` );
     }
-    else {
-      return;
-    }
-  } );
+  }
+  return null; // Ensures function always returns a value
+};
+
+
+// generate authtokens
+
+import jwt from 'jsonwebtoken';
+export const generateAccessToken = ( user: {
+  id: string;
+  role: string;
+} ) => {
+  return jwt.sign( user, process.env.JWT_SECRET as string, { expiresIn: '15s' } );
+};
+
+export const generateRefreshToken = ( user: {
+  id: string;
+  role: string;
+} ) => {
+  return jwt.sign( user, process.env.JWT_SECRET as string, );
 };
