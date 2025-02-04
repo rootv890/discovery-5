@@ -148,3 +148,8 @@ I will update this on Sunday 26th January 2025.
 
 - Trasnfer Frontend in separate directory
 - Create Backend directory - techstack Fastify + TypeScript
+
+## February 4, 2024
+
+- Express, JWT auth setup
+- Basic CRUD API plan
