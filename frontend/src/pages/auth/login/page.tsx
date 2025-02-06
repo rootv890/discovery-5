@@ -4,23 +4,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormError from "../../../components/FormError";
 import { TbLoader2 } from "react-icons/tb";
 import { z } from "zod";
-import axios from "axios";
+
 import { useAuthStore } from "../../../store/useAuthStore";
 import { useMutation } from "@tanstack/react-query";
 import TextInput from "../../../components/ui/TextInput";
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
+import { useEffect, useState } from "react";
+
+const loginSchema = z
+  .object({
+    email: z.string().email().optional(),
+    username: z.string().min(3).optional(),
+    password: z.string().min(6),
+  })
+  .refine((data) => !!data.email || !!data.username, {
+    message: "Email or Username is required",
+    path: ["email"],
+  }); // !! will convert the value to boolean
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
-
-const login = async (data: LoginFormInputs) => {
-  const response = await axios.post("http://localhost:3030/auth/login", data, {
-    withCredentials: true,
-  });
-  return response.data;
-};
 
 const LoginPage = () => {
   const {
@@ -34,16 +35,29 @@ const LoginPage = () => {
   const accessTokenSetter = authStore.setAccessToken;
   const loggedInSetter = authStore.setIsLoggedIn;
   const isLoggedIn = authStore.isLoggedIn;
+  const login = authStore.login;
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "error" | "success"
+  >("idle");
 
   const mutation = useMutation(login, {
     onSuccess: (data: any) => {
-      console.log(data);
+      // console.log(data);
       accessTokenSetter(data.accessToken as string);
       loggedInSetter(true);
+      setStatus("success");
     },
   });
 
+  // alert for success
+  // useEffect(() => {
+  //   if (status === "success") {
+  //     alert("Login successful");
+  //   }
+  // }, [status]);
+
   const onSubmit = (data: LoginFormInputs) => {
+    setStatus("loading");
     mutation.mutate(data);
   };
 
@@ -91,10 +105,15 @@ const LoginPage = () => {
 
         {errors.password && <span>{errors.password.message}</span>}
         <button
+          disabled={status === "loading" || mutation.isLoading}
           className="w-full py-4  rounded-lg text-body hover:bg-opacity-80 text-background font-semibold tracking-[0.01rem]   disabled:bg-muted disabled:text-muted transition-all duration-200  ease-in-out bg-blue-600 hover:bg-blue-700"
           type="submit"
         >
-          Login
+          {status === "loading" ? (
+            <TbLoader2 className="animate-spin" />
+          ) : (
+            "Login"
+          )}
         </button>
       </form>
       {isLoggedIn ? "Success" : "Na"}

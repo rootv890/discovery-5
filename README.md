@@ -59,9 +59,9 @@ If you’re looking for a simpler, modern, and open-source alternative, **Discov
   - Finalise decisions on authentication (e.g., Clerk, OpenAuth, or custom), backend (Node.js or Deno), and database(not sure yet).
 - [x] Database Ideation and Design
   - Brainstorm and Design schema for the database
-- [ ] Build Database
+- [x] Build Database
   - Build the database using the designed schema
-- [ ] Build Authentication Flow
+- [x] Build Authentication Flow
 - [ ] Design Core Interfaces
   - Build interfaces for Home, Authentication, Search, Explore, Add/Request Form, Trending, User Personal Collection etc.
 - [ ] Code Core Interfaces
@@ -153,3 +153,10 @@ I will update this on Sunday 26th January 2025.
 
 - Express, JWT auth setup
 - Basic CRUD API plan
+
+## Februrary 7, 2024
+
+- JWT auth setup complete
+- Working Login Interface (shit ui btw)
+- Access Token + Refresh Token setup
+- seprate branch for waitlist
