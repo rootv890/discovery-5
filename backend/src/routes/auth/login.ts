@@ -1,8 +1,9 @@
 
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+
 import { Request, Response, Router } from 'express';
-import { generateAccessToken, generateRefreshToken, requiredFieldsCheck } from '../../utils/utils';
+import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
+import { requiredFieldsCheck } from '../../utils/utils';
 import { db } from '../../db';
 import 'dotenv/config';
 
@@ -50,6 +51,26 @@ loginRouter.post( '/login', async ( req, res ): Promise<any> => {
     role: user[ 0 ].role || 'USER',
   } );
 
+  // HTTP Only Cookie
+  res.cookie( 'refreshToken', refreshToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'strict',
+    maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days
+  } );
+
   return res.status( 200 ).json( { message: 'User logged in successfully', accessToken, refreshToken } );
 
+} );
+
+
+loginRouter.post( '/logout', ( req, res ) => {
+  const refreshToken = req.cookies.refreshToken;
+  res.cookie( 'refreshToken', refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  } );
+  res.json( { message: "Logged out successfully" } );
 } );

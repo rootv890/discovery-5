@@ -5,48 +5,36 @@
  * Refresh token
  */
 
-import express from 'express';
+import express, { Request, Response } from 'express';
 import 'dotenv/config';
 const port = process.env.AUTH_PORT || 3030;
 import { loginRouter } from './routes/auth/login';
-import { generateAccessToken } from './utils/utils';
+import { generateAccessToken } from './utils/jwt';
 import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use( express.json() );
 
+
+app.use( cookieParser() );
 app.get( '/auth', ( req, res ) => {
   res.send( 'Hello World!' );
 } );
 
-app.post( `/auth/token`, ( req, res ) => {
-  const refreshTokensArray: Array<string> = [];
-  const refreshToken = req.body.token;
+app.post( "/auth/refresh-token", ( req: Request, res: Response ) => {
+  const refreshToken = req.cookies.refreshToken;
+  console.log( refreshToken );
 
-  console.log( "Refresh token", refreshToken );
+  if ( !refreshToken ) return res.status( 401 ).json( { message: "Unauthorized" } );
 
-
-  if ( refreshToken === null ) res.sendStatus( 401 ).
-    send( {
-      message: "Refresh token is required",
-    } );
-
-  if ( !refreshTokensArray.includes( refreshToken ) ) {
-    res.sendStatus( 403 ).send( {
-      message: "Invalid refresh token",
-    } );
-  }
-
-  // Verify and Generate new access token
   jwt.verify( refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET as string, ( err: any, user: any ) => {
-    if ( err ) {
-      return res.sendStatus( 403 );
-    }
+    if ( err ) return res.status( 403 ).json( { message: "Invalid refresh token", error: err } );
+
     const accessToken = generateAccessToken( { id: user.id, role: user.role } );
-    res.json( { accessToken: accessToken } );
+    res.json( { accessToken } );
   } );
 } );
-
 
 
 // http://localhost:3000/api/v1/auth/login

@@ -26,21 +26,3 @@ export const requiredFieldsCheck = ( {
   }
   return null; // Ensures function always returns a value
 };
-
-
-// generate authtokens
-
-import jwt from 'jsonwebtoken';
-export const generateAccessToken = ( user: {
-  id: string;
-  role: string;
-} ) => {
-  return jwt.sign( user, process.env.JWT_SECRET as string, { expiresIn: '15s' } );
-};
-
-export const generateRefreshToken = ( user: {
-  id: string;
-  role: string;
-} ) => {
-  return jwt.sign( user, process.env.JWT_SECRET as string, );
-};
