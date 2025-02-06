@@ -40,13 +40,20 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/",
+        path: "/auth",
+        element: <AuthLayout />,
+        children: [{ path: "/auth/login", element: <LoginPage /> }],
+      },
+      {
+        path: "/app",
         element: <App />,
       },
     ],
   },
 ]);
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AuthLayout from "./pages/auth/layout.tsx";
+import LoginPage from "./pages/auth/login/page.tsx";
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

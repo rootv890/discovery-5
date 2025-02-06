@@ -30,3 +30,4 @@ dist-ssr
 
 # rest files
 backend/*.rest
+backend/*/test.ts
