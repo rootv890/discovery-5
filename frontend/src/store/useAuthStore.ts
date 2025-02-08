@@ -27,6 +27,8 @@ export const useAuthStore = create<AuthState>( ( set ): AuthState => {
     login: async ( data: LoginType ) => {
       try {
         const response = await axiosInstance.post( '/login', data );
+        console.log( response.data );
+
         if ( response.status === 200 ) {
           const accessToken = response.data.accessToken;
           set( () => ( { accessToken: accessToken, isLoggedIn: true } ) );

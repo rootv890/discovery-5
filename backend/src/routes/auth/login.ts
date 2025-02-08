@@ -1,7 +1,7 @@
 
 import bcrypt from 'bcrypt';
 
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
 import { requiredFieldsCheck } from '../../utils/utils';
 import { db } from '../../db';
@@ -37,6 +37,10 @@ loginRouter.post( '/login', async ( req, res ): Promise<any> => {
   const hashedPassword = await bcrypt.hash( password, SALT );
   // Check password
   const isPasswordValid = await bcrypt.compare( password, hashedPassword );
+
+  console.log( password, hashedPassword, isPasswordValid );
+
+
   if ( !isPasswordValid ) {
     return res.status( 400 ).json( { message: 'Invalid password' } );
   }
@@ -65,12 +69,11 @@ loginRouter.post( '/login', async ( req, res ): Promise<any> => {
 
 
 loginRouter.post( '/logout', ( req, res ) => {
-  const refreshToken = req.cookies.refreshToken;
-  res.cookie( 'refreshToken', refreshToken, {
+  res.clearCookie( 'refreshToken', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    secure: true,
+    sameSite: "strict",
+    path: '/',
   } );
   res.json( { message: "Logged out successfully" } );
 } );

@@ -14,12 +14,6 @@
 }
 
 :root {
-  --background: #e8f5ff;
-  --foreground: #06243a;
-
-  --muted: #638199;
-  --fainted: #cfeaff;
-
   --font-inter: "Inter", serif;
   --font-instrument-serif: "Instrument Serif", serif;
   --font-futura-bo: "Futura-BO", serif;
@@ -35,7 +29,7 @@
   --background: #e8f5ff;
   --foreground: #06243a;
   --fainted: #cfeaff;
-  --muted: #638199;
+  --muted: #212121;
 
   --blue-100: #d8f4ff;
   --blue-200: #b9ecff;
@@ -104,10 +98,11 @@
   --size-h1: "4.1875rem";
 }
 
-@media (prefers-scheme: dark) {
+@media (prefers-scheme: "dark") {
   :root {
     --secondary: #e8f5ff;
-    --foreground: #06243a;
+    --background: #0b0b0b;
+    --foreground: #d37b0f;
   }
 }
 

@@ -9,6 +9,8 @@ export default {
   plugins: [fluid, require("tailwindcss-animated")],
   theme: {
     extend: {
+      // Border Radius
+
       boxShadow: {
         // box-shadow: rgba(6, 36, 58, 0.2) 0px 7px 29px 0px;
         "card-lg": "0px 7px 29px 0px rgba(6, 36, 58, 0.2)",
@@ -21,6 +23,7 @@ export default {
 
         md: "0.5rem",
         lg: "1rem",
+        "4xl": "2.5rem",
         full: "9999px",
       },
 
