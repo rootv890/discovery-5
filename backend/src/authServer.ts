@@ -7,22 +7,23 @@
 
 import express, { Request, Response } from 'express';
 import 'dotenv/config';
-const port = process.env.AUTH_PORT || 3030;
+const port = env.AUTH_PORT;
 import { loginRouter } from './routes/auth/login';
 import { generateAccessToken } from './utils/jwt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
+import env from './config/env';
 
-const app = express();
-app.use( express.json() );
+const authApp = express();
+authApp.use( express.json() );
 
 
-app.use( cookieParser() );
-app.get( '/auth', ( req, res ) => {
+authApp.use( cookieParser() );
+authApp.get( '/auth', ( req, res ) => {
   res.send( 'Hello World!' );
 } );
 
-app.post( "/auth/refresh-token", ( req: Request, res: Response ) => {
+authApp.post( "/auth/refresh-token", ( req: Request, res: Response ) => {
   const refreshToken = req.cookies.refreshToken;
   console.log( refreshToken );
 
@@ -38,8 +39,8 @@ app.post( "/auth/refresh-token", ( req: Request, res: Response ) => {
 
 
 // http://localhost:3000/api/v1/auth/login
-app.use( `/auth`, loginRouter );
+authApp.use( `/auth`, loginRouter );
 
-app.listen( port, () => {
-  console.log( `Server running on port http://localhost:${ port } ` );
+authApp.listen( 1345, () => {
+  console.log( `Auth Server running on port http://localhost:${ port } ` );
 } );

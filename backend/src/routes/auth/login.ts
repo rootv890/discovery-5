@@ -4,8 +4,9 @@ import bcrypt from 'bcrypt';
 import { Router } from 'express';
 import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
 import { requiredFieldsCheck } from '../../utils/utils';
-import { db } from '../../db';
+import { db } from '../../db/db';
 import 'dotenv/config';
+import app from '../../server';
 
 const SALT = 10;
 
@@ -77,3 +78,6 @@ loginRouter.post( '/logout', ( req, res ) => {
   } );
   res.json( { message: "Logged out successfully" } );
 } );
+
+
+app.get;

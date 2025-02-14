@@ -1,28 +1,29 @@
 import express from 'express';
+import env from './config/env';
 
-import { db } from './db';
-import { Router } from 'express';
-import 'dotenv/config';
 import { authenticateToken } from './middlewares/auth';
+
 const app = express();
-
-
-
 app.use( express.json() );
 
 // Auth Routers
-app.get( `${ process.env.API_URl }/hi`, ( req, reply ) => {
+
+app.get( '/', ( req, res ) => {
+  res.send( 'Hello World' );
+} );
+
+console.log( env.API_URL );
+
+
+app.get( `${ env.API_URL }/hi`, ( req, reply ) => {
   reply.send( {
     message: "Hello World",
   } );
 } );
 
 
-
-
-
 // Test protecd router
-app.get( `${ process.env.API_URl }/protected`, authenticateToken, ( req, reply ) => {
+app.get( `/${ env.API_URL }/protected`, authenticateToken, ( req, reply ) => {
   reply.send( {
     message: "Protected route",
     data: req.body.user ?? null,
@@ -30,6 +31,9 @@ app.get( `${ process.env.API_URl }/protected`, authenticateToken, ( req, reply )
 } );
 
 // Server
-app.listen( 3000, () => {
-  console.log( "Server is running on port 3000" );
+app.listen( env.PORT, () => {
+  console.log( `Server started @ http://localhost:${ env.PORT }` );
 } );
+
+
+export default app;

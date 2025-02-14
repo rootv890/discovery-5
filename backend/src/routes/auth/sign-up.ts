@@ -1,5 +1,5 @@
 import { eq, or } from "drizzle-orm";
-import { db } from "../../db";
+import { db } from "../../db/db";
 import { users, NewUserType, UserRoleEnumType } from "../../db/schema";
 import { hashPassword, requiredFieldsCheck } from "../../utils/utils";
 import { FastifyInstance } from "fastify";
