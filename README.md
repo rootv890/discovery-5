@@ -165,4 +165,4 @@ I will update this on Sunday 26th January 2025.
 
 - Add new tables (recycle bin, user tool bin, user collection bin) with schema
 - Changed isApproved to toolApprovalStatus (Bool -> Enum)
-- Seed the database with predefined categories, platforms, and tags (Temporary Data)
+- Seed the database with predefined categories, platforms, and tags
