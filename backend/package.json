@@ -9,7 +9,8 @@
     "auth": "tsx watch src/authServer.ts",
     "gen": "npx drizzle-kit generate",
     "push": "npx drizzle-kit push",
-    "migrate": "npx drizzle-kit migrate"
+    "migrate": "npx drizzle-kit migrate",
+    "seed": "tsx src/db/seed.ts"
   },
   "keywords": [],
   "author": "",
