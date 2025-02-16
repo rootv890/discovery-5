@@ -12,7 +12,7 @@ app.get( '/', ( req, res ) => {
   res.send( 'Hello World' );
 } );
 
-console.log( env.API_URL );
+
 
 
 app.get( `${ env.API_URL }/hi`, ( req, reply ) => {

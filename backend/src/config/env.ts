@@ -5,6 +5,7 @@ config( {
   path: path.resolve( __dirname, `../../.env.${ process.env.NODE_ENV || "development" }` ),
 } );
 
+
 const env: Env = {
   DATABASE_URL: process.env.DATABASE_URL!,
   NODE_ENV: process.env.NODE_ENV!,

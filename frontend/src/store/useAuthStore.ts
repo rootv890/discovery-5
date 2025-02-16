@@ -9,8 +9,20 @@ interface LoginType {
   password: string;
 }
 
+
+interface SignType {
+  email: string;
+  username: string;
+  password: string;
+  avatarUrl?: string;
+  bio?: string;
+}
+
 export interface AuthState {
   isLoggedIn: boolean;
+
+  // SignIn
+  signIn: ( data: SignType ) => Promise<boolean>;
   login: ( data: LoginType ) => Promise<boolean>;
   setIsLoggedIn: ( value: boolean ) => void;
   accessToken: string;
@@ -23,7 +35,6 @@ export interface AuthState {
 export const useAuthStore = create<AuthState>( ( set ): AuthState => {
   return {
     isLoggedIn: false,
-
     login: async ( data: LoginType ) => {
       try {
         const response = await axiosInstance.post( '/login', data );
@@ -92,6 +103,9 @@ export const useAuthStore = create<AuthState>( ( set ): AuthState => {
         localStorage.removeItem( "accessToken" );
         set( () => ( { accessToken: "", isLoggedIn: false } ) );
       }
-    }
+    },
+
+    signIn: async ( data: SignType ) => { }
+
   };
 } );

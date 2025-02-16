@@ -1,5 +1,6 @@
-import { relations, sql } from "drizzle-orm";
+import { eq, relations } from "drizzle-orm";
 import { boolean, jsonb, pgEnum, pgTable, primaryKey, serial, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
+
 /**
  * Enums
  */
@@ -29,16 +30,36 @@ export const userRolesEnum = pgEnum( "user_role", [
   "CURATOR",
 ] );
 
+export const entityTypeEnum = pgEnum( "entity_type", [
+  "tool",
+  "collection",
+  "user",
+  "platform",
+  "category",
+  "vote",
+  "comment",
+  "recycle_bin",
+  "user_tool_bin",
+  "user_collection_bin",
+] );
 
+
+export const toolApprovalStatusEnum = pgEnum( "tool_approval_status", [
+  "PENDING", // Submitted and waiting for approval
+  "APPROVED", // Approved and published
+  "REJECTED", // Rejected and not published
+  "DRAFT", // DEFAULT: Submitted but not yet approved
+] );
 /**
  * Tables
  */
 
 // 1️⃣  Waitlist related Tables  ----------
+
 export const waitlistUserTable = pgTable( "waitlist", {
   id: uuid( "id" ).primaryKey().defaultRandom().notNull(),
-  email: varchar( "email", { length: 64 } ).notNull(), // Increased email length
-  name: varchar( "name", { length: 32 } ).notNull(),
+  email: varchar( "email", { length: 256 } ).notNull(),
+  name: varchar( "name", { length: 256 } ).notNull(),
   role: waitlistUserRolesEnum( "role" ).notNull(),
   createdAt: timestamp( "created_at" ).notNull().defaultNow(),
   updatedAt: timestamp( "updated_at" ).notNull().defaultNow(),
@@ -46,31 +67,20 @@ export const waitlistUserTable = pgTable( "waitlist", {
 
 export const newsletterPreference = pgTable( "newsletter_preference", {
   id: serial( "id" ).primaryKey(),
-  userId: uuid( "user_id" ) // Changed from integer to uuid
+  userId: uuid( "user_id" )
     .references( () => waitlistUserTable.id, { onDelete: "cascade" } )
     .notNull(),
   newsletter: boolean( "newsletter" ).default( false ).notNull(),
 } );
 
 
-
-
-
-// Types
-export type insertWaitlistUser = typeof waitlistUserTable.$inferInsert;
-export type selectWaitlistUser = typeof waitlistUserTable.$inferSelect;
-export type WaitlistUserRoleType = ( typeof waitlistUserRolesEnum.enumValues )[ number ];
-
-
-
-
 // 2️⃣ Main Project  related Tables ----------
 
 export const users = pgTable( "users", {
   id: uuid( "id" ).primaryKey().defaultRandom(),
-  name: varchar( "name", { length: 256 } ).notNull(),
-  username: varchar( "username", { length: 256 } ).notNull().unique(),
-  email: varchar( "email", { length: 256 } ).notNull().unique(),
+  name: varchar( "name" ).notNull(),
+  username: varchar( "username" ).notNull().unique(),
+  email: varchar( "email" ).notNull().unique(),
   passwordHash: varchar( "password_hash" ).notNull(),
   role: userRolesEnum( "role" ).default( "USER" ),
   avatarUrl: text( "avatar_url" ),
@@ -88,7 +98,6 @@ export const sessions = pgTable( "sessions", {
   userId: uuid( "user_id" ).references( () => users.id, { onDelete: 'cascade' } )
     .notNull(),
   expiresAt: timestamp( "expires_at" ).notNull(),
-
 } );
 
 
@@ -96,7 +105,7 @@ export const platforms = pgTable( "platforms", {
   id: uuid( "id" ).primaryKey().defaultRandom(),
   name: varchar( "name", { length: 256 } ).notNull().unique(),
   description: text( "description" ),
-  imageUrl: text( "image_url" ),
+  imageUrl: text( "image_url" ),  // Recommended: SVG
   createdAt: timestamp( "created_at" ).defaultNow(),
   updatedAt: timestamp( "updated_at" ).defaultNow(),
 } );
@@ -105,7 +114,7 @@ export const categories = pgTable( "categories", {
   id: uuid( "id" ).primaryKey().defaultRandom(),
   name: varchar( "name", { length: 256 } ).notNull().unique(),
   description: text( "description" ),
-  imageUrl: text( "image_url" ).notNull(),
+  imageUrl: text( "image_url" ).notNull(), // Recommended: SVG
   createdAt: timestamp( "created_at" ).defaultNow(),
   updatedAt: timestamp( "updated_at" ).defaultNow(),
 } );
@@ -116,18 +125,24 @@ export const tools = pgTable( "tools", {
   id: uuid( "id" ).primaryKey().defaultRandom(),
   name: varchar( "name", { length: 256 } ).notNull().unique(),
   description: text( "description" ),
-  imageUrl: text( "image_url" ).notNull(),
-  thumbnailUrls: jsonb( "thumbnail_urls" ),
-  isApproved: boolean( "is_approved" ).default( false ),
+  imageUrl: text( "image_url" ).notNull(), // Recommended : JPG or PNG
+  thumbnailUrls: jsonb( "thumbnail_urls" ).$type<{
+
+    // 📱 Small: For mobile devices
+    small?: string;  //  320-480px wide
+    // 💻 Medium: For tablets and smaller screens
+    medium?: string;  //  768-1024px wide
+    // 🖥️ Large: For desktop and high-resolution displays
+    large?: string;  //  1200px and above
+  }>(),
+  approvalStatus: toolApprovalStatusEnum( "approval_status" ).default( "PENDING" ),
   isNew: boolean( "is_new" ).default( false ),
   createdAt: timestamp( "created_at" ).defaultNow(),
   updatedAt: timestamp( "updated_at" ).defaultNow(),
 },
 
   ( t ) => [
-    uniqueIndex( 'idx_tools_name' ).on( t.name ), uniqueIndex( "idx_tools_approved" ).on( t.isApproved ).where( sql`is_approved = TRUE` ),
-    // uniqueIndex( "idx_tools_description" ).on( t.description )
-
+    uniqueIndex( "idx_tools_approved" ).on( t.approvalStatus ).where( eq( t.approvalStatus, "APPROVED" ) ),
   ]
 
 );
@@ -154,7 +169,7 @@ export const toolTags = pgTable( "tool_tags", {
   * - ✅ Tool1 + TagA
     - ✅ Tool1 + TagB
     - ✅ Tool2 + TagA
-    - ❌ Tool1 + TagA (duplicate - will be rejected by database)
+    - ❌ Tool1 + TagA (duplicate - will be rejected by the database)
   */
   primaryKey( { columns: [ t.toolId, t.tagId ] } )
 ]
@@ -168,13 +183,21 @@ export const collections = pgTable( "collections", {
     .references( () => users.id, { onDelete: "cascade" } )
     .notNull(),
   description: text( "description" ),
-  images: jsonb( "images" ),
+  // Images -> Array of URLs
+  images: jsonb( "images" ).$type<{
+    url: {
+      small: string;
+      medium: string;
+      large: string;
+    };
+    alt: string;
+  }[]>(),
   isPublic: boolean( "is_public" ).default( false ),
   createdAt: timestamp( "created_at" ).defaultNow(),
   updatedAt: timestamp( "updated_at" ).defaultNow(),
 },
   ( t ) => [
-    uniqueIndex( 'idx_collection_user_id' ).on( t.userId )
+    uniqueIndex( 'idx_collection_user_user_id_name' ).on( t.userId, t.name ),
   ]
 );
 
@@ -192,13 +215,7 @@ export const collectionTools = pgTable( 'collection_tools', {
   uniqueIndex( "collectionTools" ).on( t.collectionId, t.toolId )
 ] );
 
-/**
- * ToolCategoryPlatform (Bridge Tools -> Categories -> Platforms)
- * id (UUID, PK) - Unique ID
- * tool_id (UUID, FK) - References Tools
- * platform_id (UUID, FK) - References Platforms
- * category_id (UUID, FK) - References Categories
- */
+
 export const toolCategoryPlatform = pgTable( 'tool_category_platform', {
   id: uuid( "id" ).primaryKey().defaultRandom(),
 
@@ -231,14 +248,16 @@ export const toolCategoryPlatform = pgTable( 'tool_category_platform', {
 export const votes = pgTable( "votes", {
   id: uuid( "id" ).primaryKey().defaultRandom(),
   userId: uuid( "user_id" )
-    .references( () => users.id, { onDelete: "set null" } )
+    .references( () => users.id, { onDelete: "no action" } ) // So that if user is deleted, vote is not deleted
     .notNull(),
   toolId: uuid( "tool_id" )
-    .references( () => tools.id, { onDelete: "cascade" } )
+    .references( () => tools.id, { onDelete: "no action" } ) // So that if tool is deleted, vote is not deleted
     .notNull(),
   voteType: voteTypeEnum( "vote_type" ).default( "NONE" ),
   createdAt: timestamp( "created_at" ).defaultNow(),
   updatedAt: timestamp( "updated_at" ).defaultNow(),
+
+
 },
   ( t ) => {
     return [
@@ -247,7 +266,7 @@ export const votes = pgTable( "votes", {
   }
 );
 
-export const comments = pgTable( "comment", {
+export const comments = pgTable( "comments", {
   id: uuid( "id" ).primaryKey().defaultRandom(),
   userId: uuid( "user_id" )
     .references( () => users.id, { onDelete: "cascade" } )
@@ -295,14 +314,16 @@ export const entityRelations = relations(EntityTable, ({ one, many }) => ({
  * but one collection can have only one user
  * so its a One (User) to Many (Collections)
  */
-export const userRelations = relations( users, ( { many } ) => ( {
+export const userRelations = relations( users, ( { many, one } ) => ( {
   votes: many( votes ),
   comments: many( comments ),
   collections: many( collections ),
-  newsletterPreference: many( newsletterPreference ),
+  newsletterPreference: one( newsletterPreference ),
 } ) );
 export const collectionRelations = relations( collections, ( { many, one } ) => ( {
-  user: one( users, { fields: [ collections.userId ], references: [ users.id ] } ),
+  user: one( users,
+    // Add Constraints
+    { fields: [ collections.userId ], references: [ users.id ] } ),
   collectionTools: many( collectionTools ),
 } ) );
 
@@ -425,6 +446,47 @@ export const commentRelations = relations( comments, ( { one, many } ) => ( {
 } ) );
 
 
+// Recycle Bins -> Soft Delete
+// Only Admin or Curator can delete the tool or collection
+export const recycleBin = pgTable( "recycle_bin", {
+  id: uuid( "id" ).primaryKey().defaultRandom(),
+  entityType: entityTypeEnum( "entity_type" ).notNull(),
+  entityId: uuid( "entity_id" ).references( () => tools.id, { onDelete: "cascade" } ),
+  deletedBy: uuid( "deleted_by" ).references( () => users.id, { onDelete: "cascade" } ),
+  deletedAt: timestamp( "deleted_at" ).defaultNow(),
+  deletedReason: text( "deleted_reason" ),
+} );
+
+// Personal user Tool Bin
+export const userToolBin = pgTable( "user_tool_bin", {
+  id: uuid( "id" ).primaryKey().defaultRandom(),
+  userId: uuid( "user_id" ).references( () => users.id, { onDelete: "cascade" } ),
+  toolId: uuid( "tool_id" ).references( () => tools.id, { onDelete: "cascade" } ),
+  deletedAt: timestamp( "deleted_at" ).defaultNow(),
+  deletedReason: text( "deleted_reason" ),
+} );
+
+export const userCollectionBin = pgTable( "user_collection_bin", {
+  id: uuid( "id" ).primaryKey().defaultRandom(),
+  userId: uuid( "user_id" ).references( () => users.id, { onDelete: "cascade" } ),
+  collectionId: uuid( "collection_id" ).references( () => collections.id, { onDelete: "cascade" } ),
+  deletedAt: timestamp( "deleted_at" ).defaultNow(),
+  deletedReason: text( "deleted_reason" ),
+} );
+
+
+// Banned Users
+export const bannedUsers = pgTable( "banned_users", {
+  id: uuid( "id" ).primaryKey().defaultRandom(),
+  userId: uuid( "user_id" ).references( () => users.id, { onDelete: "cascade" } ),
+  bannedAt: timestamp( "banned_at" ).defaultNow(),
+  bannedReason: text( "banned_reason" ),
+  bannedBy: uuid( "banned_by" ).references( () => users.id, { onDelete: "cascade" } ),
+  bannedUntil: timestamp( "banned_until" ),
+} );
+
+
+
 
 /**
  * Types
@@ -435,6 +497,7 @@ export const commentRelations = relations( comments, ( { one, many } ) => ( {
 export type GenderEnumType = ( typeof genderEnum.enumValues )[ number ];
 export type VoteTypeEnumType = ( typeof voteTypeEnum.enumValues )[ number ];
 export type UserRoleEnumType = ( typeof userRolesEnum.enumValues )[ number ];
+export type ToolApprovalStatusEnumType = ( typeof toolApprovalStatusEnum.enumValues )[ number ];
 
 // Users
 export const NewUserType = users.$inferInsert;
@@ -463,3 +526,13 @@ export const SelectCommentType = comments.$inferSelect;
 // Votes
 export const NewVoteType = votes.$inferInsert;
 export const SelectVoteType = votes.$inferSelect;
+
+
+// Waitlist User Types
+export type insertWaitlistUser = typeof waitlistUserTable.$inferInsert;
+export type selectWaitlistUser = typeof waitlistUserTable.$inferSelect;
+export type WaitlistUserRoleType = ( typeof waitlistUserRolesEnum.enumValues )[ number ];
+
+// Newsletter Preference Types
+export type insertNewsletterPreference = typeof newsletterPreference.$inferInsert;
+export type selectNewsletterPreference = typeof newsletterPreference.$inferSelect;

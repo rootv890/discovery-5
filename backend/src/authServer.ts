@@ -4,7 +4,6 @@
  * Logout
  * Refresh token
  */
-
 import express, { Request, Response } from 'express';
 import 'dotenv/config';
 const port = env.AUTH_PORT;
@@ -13,12 +12,14 @@ import { generateAccessToken } from './utils/jwt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 import env from './config/env';
+import { signUpRoute } from './routes/auth/sign-up';
 
 const authApp = express();
 authApp.use( express.json() );
 
 
 authApp.use( cookieParser() );
+
 authApp.get( '/auth', ( req, res ) => {
   res.send( 'Hello World!' );
 } );
@@ -40,7 +41,7 @@ authApp.post( "/auth/refresh-token", ( req: Request, res: Response ) => {
 
 // http://localhost:3000/api/v1/auth/login
 authApp.use( `/auth`, loginRouter );
-
-authApp.listen( 1345, () => {
-  console.log( `Auth Server running on port http://localhost:${ port } ` );
+authApp.use( `/auth`, signUpRouter );
+authApp.listen( port, () => {
+  console.log( `Auth server listening at http://localhost:${ port }` );
 } );

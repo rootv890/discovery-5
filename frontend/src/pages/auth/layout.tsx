@@ -6,7 +6,7 @@ const AuthLayout = () => {
   const logout = authStore.logout;
   const isLoggedIn = authStore.isLoggedIn;
   return (
-    <div className="w-full max-h-screen   flex items-center justify-start mt-[30%] flex-col relative">
+    <div className="w-full max-h-screen h-screen   flex items-center  justify-center flex-col relative">
       {/* <h1 className="text-h1 font-serif font-bold ">Discovery 5</h1> */}
       <Outlet />
       <div className="mt-4">
