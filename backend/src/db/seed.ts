@@ -901,7 +901,6 @@ async function seedDatabase () {
     }
 
     console.log( "✅ Database seeding complete!" );
-
   } catch ( error ) {
     console.error( "Database seeding failed:", error );
   }

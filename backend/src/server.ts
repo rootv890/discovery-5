@@ -2,6 +2,7 @@ import express from 'express';
 import env from './config/env';
 
 import { authenticateToken } from './middlewares/auth';
+import { platformRouter } from './routes/platform.route';
 
 const app = express();
 app.use( express.json() );
@@ -12,14 +13,17 @@ app.get( '/', ( req, res ) => {
   res.send( 'Hello World' );
 } );
 
-
-
-
 app.get( `${ env.API_URL }/hi`, ( req, reply ) => {
   reply.send( {
     message: "Hello World",
   } );
 } );
+
+
+app.use( `${ env.API_URL }/platforms`, platformRouter );
+
+
+
 
 
 // Test protecd router

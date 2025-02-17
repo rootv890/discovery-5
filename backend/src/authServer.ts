@@ -12,7 +12,7 @@ import { generateAccessToken } from './utils/jwt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 import env from './config/env';
-import { signUpRoute } from './routes/auth/sign-up';
+import { signUpRoute, signUpRouter } from './routes/auth/sign-up';
 
 const authApp = express();
 authApp.use( express.json() );
