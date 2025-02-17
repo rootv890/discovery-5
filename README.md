@@ -57,7 +57,7 @@ If you’re looking for a simpler, modern, and open-source alternative, **Discov
 
 ## - Phase 3: Core Feature Development
 
-- [ ] Tech Stack Decisions
+- [x] Tech Stack Decisions
   - Finalise decisions on authentication (e.g., Clerk, OpenAuth, or custom), backend (Node.js or Deno), and database(not sure yet).
 - [x] Database Ideation and Design
   - Brainstorm and Design schema for the database
@@ -72,7 +72,7 @@ If you’re looking for a simpler, modern, and open-source alternative, **Discov
 
 ---
 
-## - Phase 4: Backend Integration
+## - Phase 4: Complete Backend Integration
 
 - [ ] Set Up APIs
   - Build backend APIs to support frontend functionality, Node.js (or Deno) and a database like PostgreSQL or Neon.
