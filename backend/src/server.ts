@@ -2,8 +2,8 @@ import express from 'express';
 import env from './config/env';
 
 import { authenticateToken } from './middlewares/auth';
-import { platformRouter } from './routes/platform.route';
-
+import { platformRouter } from './routes/platforms.route';
+import { categoriesRouter } from './routes/categories.route';
 const app = express();
 app.use( express.json() );
 
@@ -21,6 +21,7 @@ app.get( `${ env.API_URL }/hi`, ( req, reply ) => {
 
 
 app.use( `${ env.API_URL }/platforms`, platformRouter );
+app.use( `${ env.API_URL }/categories`, categoriesRouter );
 
 
 

@@ -1,5 +1,8 @@
-import { asc, desc } from 'drizzle-orm';
+import { asc, desc, eq, inArray } from 'drizzle-orm';
 import { ApiMetadata, ApiResponse } from '../type';
+import { platform } from 'os';
+import { db } from '../db/db';
+import { categories, platforms, tools } from '../db/schema';
 
 export const getPaginationParams = (
   query: any, // eg : req.query
@@ -58,4 +61,46 @@ export const createApiErrorResponse = ( error: unknown ) => {
       details: ( error as Error ).stack,
     },
   };
+};
+
+
+// All does exits
+export const doesPlatformExists = async ( platformId: string ) => {
+  const platform = await db.select().from( platforms ).where( eq( platforms.id, platformId ) );
+  return platform.length > 0;
+};
+
+export const doesCategoryExists = async ( categoryId: string ) => {
+  const category = await db.select().from( categories ).where( eq( categories.id, categoryId ) );
+  return category.length > 0;
+};
+
+export const doesCategoryExistsByName = async ( name: string ) => {
+  const category = await db.select().from( categories ).where( eq( categories.name, name ) );
+  console.log( category );
+  return category.length > 0;
+};
+
+export const doesToolExists = async ( toolId: string ) => {
+  const tool = await db.select().from( tools ).where( eq( tools.id, toolId ) );
+  return tool.length > 0;
+};
+
+// Get name of the things from given ids
+
+/**
+ * Usecases:
+ * 1. Get name of the platform from id
+ * 2. Get name of the category from id
+ * 3. Get name of the tool from id
+ * 4. When we fetch categories for a platform, we get id, we need to get name
+ */
+export const getNameFromId = async ( id: string, table: any ) => {
+  const name = await db.select().from( table ).where( eq( table.id, id ) );
+  return name[ 0 ].name;
+};
+
+export const getNamesFromIds = async ( ids: string[], table: any ) => {
+  const names = await db.select().from( table ).where( inArray( table.id, ids ) );
+  return names.map( ( name ) => name.name );
 };

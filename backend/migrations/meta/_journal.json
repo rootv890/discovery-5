@@ -43,6 +43,13 @@
       "when": 1739724278799,
       "tag": "0005_oval_network",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1739895595534,
+      "tag": "0006_lovely_tyrannus",
+      "breakpoints": true
     }
   ]
 }

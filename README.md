@@ -178,3 +178,7 @@ I will update this on Sunday 26th January 2025.
 - API Error Handling
 - Pagination, Sorting, Filtering
 - Spreadsheet Maintaince for API development and tracking (<https://docs.google.com/spreadsheets/d/1ZXrV4rfh6gRWfo0UsQnCbY8EwBQRPluwjBGjzcN7Wh8/edit?usp=sharing>)
+
+## February 18, 2025
+
+- Categories API (Little bit of issues with the API, need to fix it)

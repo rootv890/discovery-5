@@ -23,7 +23,7 @@ platformRouter.get( '/', async ( req, res ) => {
 
     // const totalPages = Math.ceil( totalItems / limit );
     const metadata = getPaginationMetadata( totalItems, page, limit, sortBy, order );
-    console.log( metadata );
+    // console.log( metadata );
 
 
     // Construct response using `ApiResponse`

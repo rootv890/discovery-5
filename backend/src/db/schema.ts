@@ -117,6 +117,7 @@ export const categories = pgTable( "categories", {
   imageUrl: text( "image_url" ).notNull(), // Recommended: SVG
   createdAt: timestamp( "created_at" ).defaultNow(),
   updatedAt: timestamp( "updated_at" ).defaultNow(),
+  // No platformId beacuse I am using parentId to link categories
 } );
 
 
@@ -245,6 +246,20 @@ export const toolCategoryPlatform = pgTable( 'tool_category_platform', {
   ]
 );
 
+
+export const categoryPlatform = pgTable( "category_platform", {
+  id: uuid( "id" ).primaryKey().defaultRandom(),
+  categoryId: uuid( "category_id" ).references( () => categories.id, { onDelete: "cascade" } ),
+  platformId: uuid( "platform_id" ).references( () => platforms.id, { onDelete: "cascade" } ),
+  createdAt: timestamp( "created_at" ).defaultNow(),
+  updatedAt: timestamp( "updated_at" ).defaultNow(),
+},
+  ( t ) => [
+    uniqueIndex( "idx_category_platform" ).on( t.categoryId, t.platformId ),
+  ]
+);
+
+
 export const votes = pgTable( "votes", {
   id: uuid( "id" ).primaryKey().defaultRandom(),
   userId: uuid( "user_id" )
@@ -345,10 +360,12 @@ export const toolRelations = relations( tools, ( { many } ) => ( {
 
 export const categoryRelations = relations( categories, ( { many } ) => ( {
   toolCategoryPlatform: many( toolCategoryPlatform ),
+  categoryPlatform: many( categoryPlatform ),
 } ) );
 
 export const platformRelations = relations( platforms, ( { many } ) => ( {
   toolCategoryPlatform: many( toolCategoryPlatform ),
+  categoryPlatform: many( categoryPlatform ),
 } ) );
 
 
