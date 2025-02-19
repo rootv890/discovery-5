@@ -10,7 +10,8 @@
     "gen": "npx drizzle-kit generate",
     "push": "npx drizzle-kit push",
     "migrate": "npx drizzle-kit migrate",
-    "seed": "tsx src/db/seed.ts"
+    "seed": "tsx src/db/seed.ts",
+    "test:db": "tsx watch src/db.test.ts"
   },
   "keywords": [],
   "author": "",

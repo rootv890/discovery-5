@@ -5,50 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1738250286590,
-      "tag": "0000_gifted_lila_cheney",
+      "when": 1739945743902,
+      "tag": "0000_tiny_phil_sheldon",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1738250462814,
-      "tag": "0001_optimal_nicolaos",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1738298600265,
-      "tag": "0002_daffy_young_avengers",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1738302084798,
-      "tag": "0003_clever_giant_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1738303677706,
-      "tag": "0004_futuristic_dexter_bennett",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1739724278799,
-      "tag": "0005_oval_network",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1739895595534,
-      "tag": "0006_lovely_tyrannus",
+      "when": 1739958045703,
+      "tag": "0001_early_purifiers",
       "breakpoints": true
     }
   ]

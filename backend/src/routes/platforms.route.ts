@@ -101,9 +101,8 @@ platformRouter.get( '/name/:name', async ( req, res ) => {
 // Create a platform
 platformRouter.post( '/', async ( req, res ) => {
   try {
-
+    // TODO : Batch Based  insertion [ { name, description, imageUrl } ]
     const { name, description, imageUrl } = req.body;
-
     const returnData = await db.insert( platforms ).values( { name, description, imageUrl } ).returning();
 
     const response = {

@@ -1,3 +1,8 @@
+/**
+ * Non API related utils
+ */
+
+
 import bcrypt from 'bcrypt';
 import { Request } from 'express';
 
@@ -26,3 +31,21 @@ export const requiredFieldsCheck = ( {
   }
   return null; // Ensures function always returns a value
 };
+
+
+export function devConsole ( type: 'log' | 'table' | 'error' | 'info' = 'log', ...args: any[] ) {
+  if ( process.env.NODE_ENV === 'development' ) {
+    if ( type === 'log' ) {
+      console.log( ...args );
+    }
+    if ( type === 'table' ) {
+      console.table( ...args );
+    }
+    if ( type === 'error' ) {
+      console.error( ...args );
+    }
+    if ( type === 'info' ) {
+      console.info( ...args );
+    }
+  }
+}

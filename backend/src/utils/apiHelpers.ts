@@ -1,8 +1,12 @@
+/**
+ * All API and DB related helpers
+ */
+
 import { asc, desc, eq, inArray } from 'drizzle-orm';
 import { ApiMetadata, ApiResponse } from '../type';
 import { platform } from 'os';
 import { db } from '../db/db';
-import { categories, platforms, tools } from '../db/schema';
+import { categories, categoryPlatform, platforms, tools } from '../db/schema';
 
 export const getPaginationParams = (
   query: any, // eg : req.query
@@ -104,3 +108,11 @@ export const getNamesFromIds = async ( ids: string[], table: any ) => {
   const names = await db.select().from( table ).where( inArray( table.id, ids ) );
   return names.map( ( name ) => name.name );
 };
+
+
+export const getCategoryFromPlatform = async ( platformId: string ) => {
+  const category = await db.select().from( categories ).where( eq( categoryPlatform.platformId, platformId ) );
+  return category;
+};
+
+// TOOL : Get tool from category

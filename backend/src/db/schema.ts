@@ -43,6 +43,11 @@ export const entityTypeEnum = pgEnum( "entity_type", [
   "user_collection_bin",
 ] );
 
+export const platformConstraintEnum = pgEnum( "platform_constraint", [
+  "NONE", // Platform-agnostic : No constraint None or Multiple
+  "SINGLE", // Platform-specific : Single platform
+] );
+
 
 export const toolApprovalStatusEnum = pgEnum( "tool_approval_status", [
   "PENDING", // Submitted and waiting for approval
@@ -115,12 +120,24 @@ export const categories = pgTable( "categories", {
   name: varchar( "name", { length: 256 } ).notNull().unique(),
   description: text( "description" ),
   imageUrl: text( "image_url" ).notNull(), // Recommended: SVG
-  createdAt: timestamp( "created_at" ).defaultNow(),
+  platformConstraint: platformConstraintEnum( "platform_constraint" ).default( "NONE" ).notNull(), // NONE = For Platform-agnostic tools (No constraint) and SINGLE = For Platform-specific tools (Single platform)
+
   updatedAt: timestamp( "updated_at" ).defaultNow(),
   // No platformId beacuse I am using parentId to link categories
 } );
 
 
+export const categoryPlatform = pgTable( "category_platform", {
+  id: uuid( "id" ).primaryKey().defaultRandom(),
+  categoryId: uuid( "category_id" ).references( () => categories.id, { onDelete: "cascade" } ).notNull(),
+  platformId: uuid( "platform_id" ).references( () => platforms.id, { onDelete: "cascade" } ).notNull(),
+  createdAt: timestamp( "created_at" ).defaultNow(),
+  updatedAt: timestamp( "updated_at" ).defaultNow()
+
+},  // Must have unqiue categoryId and platformId
+  ( t ) => [
+    uniqueIndex( "idx_category_platform" ).on( t.categoryId, t.platformId ),
+  ] );
 
 export const tools = pgTable( "tools", {
   id: uuid( "id" ).primaryKey().defaultRandom(),
@@ -246,20 +263,6 @@ export const toolCategoryPlatform = pgTable( 'tool_category_platform', {
   ]
 );
 
-
-export const categoryPlatform = pgTable( "category_platform", {
-  id: uuid( "id" ).primaryKey().defaultRandom(),
-  categoryId: uuid( "category_id" ).references( () => categories.id, { onDelete: "cascade" } ),
-  platformId: uuid( "platform_id" ).references( () => platforms.id, { onDelete: "cascade" } ),
-  createdAt: timestamp( "created_at" ).defaultNow(),
-  updatedAt: timestamp( "updated_at" ).defaultNow(),
-},
-  ( t ) => [
-    uniqueIndex( "idx_category_platform" ).on( t.categoryId, t.platformId ),
-  ]
-);
-
-
 export const votes = pgTable( "votes", {
   id: uuid( "id" ).primaryKey().defaultRandom(),
   userId: uuid( "user_id" )
@@ -360,12 +363,10 @@ export const toolRelations = relations( tools, ( { many } ) => ( {
 
 export const categoryRelations = relations( categories, ( { many } ) => ( {
   toolCategoryPlatform: many( toolCategoryPlatform ),
-  categoryPlatform: many( categoryPlatform ),
 } ) );
 
 export const platformRelations = relations( platforms, ( { many } ) => ( {
   toolCategoryPlatform: many( toolCategoryPlatform ),
-  categoryPlatform: many( categoryPlatform ),
 } ) );
 
 
@@ -509,7 +510,7 @@ export const bannedUsers = pgTable( "banned_users", {
  * Types
  */
 
-// All Enums
+
 // ( typeof waitlistUserRolesEnum.enumValues )[ number ];
 export type GenderEnumType = ( typeof genderEnum.enumValues )[ number ];
 export type VoteTypeEnumType = ( typeof voteTypeEnum.enumValues )[ number ];
