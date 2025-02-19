@@ -182,3 +182,10 @@ I will update this on Sunday 26th January 2025.
 ## February 18, 2025
 
 - Categories API (Little bit of issues with the API, need to fix it)
+
+
+## February 19,2025
+
+- Category API but with some working condition
+- Some more API Utils and Helpers
+- Started to shift some business logic to seprate controllers
