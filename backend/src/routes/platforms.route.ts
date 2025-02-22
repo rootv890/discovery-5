@@ -5,8 +5,8 @@ import { platforms } from '../db/schema';
 import { AnyColumn, asc, desc, eq, ilike, like, sql, SQLWrapper } from 'drizzle-orm';
 import { createApiErrorResponse, getPaginationMetadata, getPaginationParams, getSortingDirection } from '../utils/apiHelpers';
 
-export const platformRouter = Router();
-platformRouter.get( '/', async ( req, res ) => {
+export const PlatformsRouter = Router();
+PlatformsRouter.get( '/', async ( req, res ) => {
   try {
     //  use apiHelpers
     const { sortBy, order, page, limit, offset } = getPaginationParams( req.query, [ 'createdAt', 'name' ] );
@@ -51,7 +51,7 @@ platformRouter.get( '/', async ( req, res ) => {
 
 
 // Get platform by id (FOLLOW THE RULES)
-platformRouter.get( '/:id', async ( req, res ) => {
+PlatformsRouter.get( '/:id', async ( req, res ) => {
 
   try {
 
@@ -76,7 +76,7 @@ platformRouter.get( '/:id', async ( req, res ) => {
 } );
 
 // Get platform by name
-platformRouter.get( '/name/:name', async ( req, res ) => {
+PlatformsRouter.get( '/name/:name', async ( req, res ) => {
   try {
     const { name } = req.params;
 
@@ -99,7 +99,7 @@ platformRouter.get( '/name/:name', async ( req, res ) => {
 } );
 
 // Create a platform
-platformRouter.post( '/', async ( req, res ) => {
+PlatformsRouter.post( '/', async ( req, res ) => {
   try {
     // TODO : Batch Based  insertion [ { name, description, imageUrl } ]
     const { name, description, imageUrl } = req.body;
@@ -119,7 +119,7 @@ platformRouter.post( '/', async ( req, res ) => {
 
 
 // Update a platform
-platformRouter.put( '/:id', async ( req, res ) => {
+PlatformsRouter.put( '/:id', async ( req, res ) => {
   try {
     const { id } = req.params;
     const { name, description, imageUrl } = req.body;
@@ -147,7 +147,7 @@ platformRouter.put( '/:id', async ( req, res ) => {
 
 // Delete a platform
 // TODO : Only by admin
-platformRouter.delete( '/:id', async ( req, res ) => {
+PlatformsRouter.delete( '/:id', async ( req, res ) => {
   try {
     const { id } = req.params;
     const deletedPlatform = await db.delete( platforms ).where( eq( platforms.id, id ) ).returning(

@@ -9,9 +9,9 @@ import { ApiResponse } from '../type';
 import { addCatToMultiplePlatForms, createCategory, deleteCategory, getAllCatsFromPlatform, removeCatFromPlatforms } from '../controllers/categories.controller';
 import { isValidUUID, checkMissingFields } from '../utils/apiUtils';
 
-export const categoriesRouter = Router();
+export const CategoriesRouter = Router();
 
-categoriesRouter.get( '/', async ( req, res ) => {
+CategoriesRouter.get( '/', async ( req, res ) => {
 
 
   const { page, limit, offset, sortBy, order } = getPaginationParams( req.query, [ 'name', 'createdAt', 'updatedAt' ] );
@@ -41,7 +41,7 @@ categoriesRouter.get( '/', async ( req, res ) => {
 } );
 
 // All categories under a parent platform
-categoriesRouter.get( "/platform/:platformId", async ( req, res ) => {
+CategoriesRouter.get( "/platform/:platformId", async ( req, res ) => {
   const { platformId } = req.params;
 
   const { page, limit, offset, sortBy, order } = getPaginationParams( req.query, [ 'name', 'createdAt', 'updatedAt' ] );
@@ -72,7 +72,7 @@ categoriesRouter.get( "/platform/:platformId", async ( req, res ) => {
 
 
 // By category id
-categoriesRouter.get( "/:id", async ( req, res ) => {
+CategoriesRouter.get( "/:id", async ( req, res ) => {
   const { id } = req.params;
   try {
     const category = await db.select().from( categories ).where( eq( categories.id, id ) );
@@ -95,7 +95,7 @@ categoriesRouter.get( "/:id", async ( req, res ) => {
 // Create a category under a parent platform
 // TODO : Only admin and moderator can create a category
 // POST  /categories
-categoriesRouter.post( "/", async ( req, res ) => {
+CategoriesRouter.post( "/", async ( req, res ) => {
   const { name, description, imageUrl, platformConstraint, platformIds } = req.body as typeof NewCategoryType & {
     platformIds: string[];
   };
@@ -161,7 +161,7 @@ categoriesRouter.post( "/", async ( req, res ) => {
 
 // Add a category to multiple platforms
 // POST  /categories/:id/platforms
-categoriesRouter.post( "/:id/platforms", async ( req, res ) => {
+CategoriesRouter.post( "/:id/platforms", async ( req, res ) => {
   const { id } = req.params;
   const { platformIds } = req.body as { platformIds: string[]; };
 
@@ -201,7 +201,7 @@ categoriesRouter.post( "/:id/platforms", async ( req, res ) => {
 
 // Update a category
 // PUT  /categories/:id
-categoriesRouter.patch( "/:id", async ( req, res ) => {
+CategoriesRouter.patch( "/:id", async ( req, res ) => {
   try {
     const { id } = req.params;
     const { name, description, imageUrl, platformConstraint } = req.body as typeof NewCategoryType;
@@ -260,7 +260,7 @@ categoriesRouter.patch( "/:id", async ( req, res ) => {
 
 // Delete a category
 // DELETE  /categories/:id
-categoriesRouter.delete( "/:id", async ( req, res ) => {
+CategoriesRouter.delete( "/:id", async ( req, res ) => {
   const { id } = req.params;
   try {
     // Respnse and error handled inside the controller
@@ -275,7 +275,7 @@ categoriesRouter.delete( "/:id", async ( req, res ) => {
 
 // Remove a category from multiple platforms
 // DELETE  /categories/:id/platforms
-categoriesRouter.delete( "/:id/remove-platforms", async ( req, res ) => {
+CategoriesRouter.delete( "/:id/remove-platforms", async ( req, res ) => {
   const { id } = req.params;
   const { platformIds } = req.body as { platformIds: string[]; };
 
