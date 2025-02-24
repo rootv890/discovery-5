@@ -38,7 +38,13 @@ const { sortBy, order, page, limit, offset } = getPaginationParams(req.query, [
 ])
 const orderDirection = getSortingDirection(order)
 // ... (Drizzle query using sortBy, orderDirection, limit, offset) ...
-const metadata = getPaginationMetadata(totalItems, page, limit, sortBy, order)
+const metadata = generatePaginationMetadata(
+  totalItems,
+  page,
+  limit,
+  sortBy,
+  order
+)
 ```
 
 ## 3. Descriptive Error Handling and Status Codes

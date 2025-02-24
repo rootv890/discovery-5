@@ -3,7 +3,7 @@ import { db } from '../db/db';
 import { ApiMetadata, ApiResponse } from '../type';
 import { platforms } from '../db/schema';
 import { AnyColumn, asc, desc, eq, ilike, like, sql, SQLWrapper } from 'drizzle-orm';
-import { createApiErrorResponse, getPaginationMetadata, getPaginationParams, getSortingDirection } from '../utils/apiHelpers';
+import { createApiErrorResponse, generatePaginationMetadata, getPaginationParams, getSortingDirection } from '../utils/apiHelpers';
 
 export const PlatformsRouter = Router();
 PlatformsRouter.get( '/', async ( req, res ) => {
@@ -22,7 +22,7 @@ PlatformsRouter.get( '/', async ( req, res ) => {
       .offset( offset );
 
     // const totalPages = Math.ceil( totalItems / limit );
-    const metadata = getPaginationMetadata( totalItems, page, limit, sortBy, order );
+    const metadata = generatePaginationMetadata( totalItems, page, limit, sortBy, order );
     // console.log( metadata );
 
 

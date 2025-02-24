@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { createApiErrorResponse } from "@/utils/apiHelpers";
+import { createApiErrorResponse, generatePaginationMetadata, getPaginationParams, getSortingDirection } from "@/utils/apiHelpers";
+import { db } from "@/db/db";
+import { AnyColumn } from "drizzle-orm";
+import { tools } from "@/db/schema";
+import { ApiMetadata, ApiResponse } from "@/type";
 
 /* Routes */
 export const ToolsRouter = Router();
@@ -49,11 +53,37 @@ export const ToolsRouter = Router();
 
 // Get all tools
 
-ToolsRouter.get( '/', ( req, res ) => {
+ToolsRouter.get( '/', async ( req, res ) => {
   try {
+    // common things
+    const { sortBy, order, page, limit, offset } = getPaginationParams( req.query, [ 'createdAt', 'name' ] );
+    const orderBy = getSortingDirection( order );
 
+    const tools = await getAllToolsPromise( sortBy, order, page, limit, offset );
+
+    console.log( "Fetched all Tools: ", tools );
+
+
+    const metadata = generatePaginationMetadata( tools.length, page, limit, sortBy, order );
+
+    const resposne: ApiResponse<typeof tools[ number ]> = {
+      success: true,
+      message: "All Tools fetched successfully",
+      data: tools,
+      metadata: metadata as ApiMetadata,
+    };
+
+    res.status( 200 ).json( resposne );
   } catch ( error ) {
     const errorResponse = createApiErrorResponse( error );
     res.status( 500 ).json( errorResponse );
   }
 } );
+
+
+// Helper Functions
+const getAllToolsPromise = async ( sortingField: string, order: string, page: number, limit: number, offset: number, categoryId?: string, platformId?: string ) => {
+  const orderBy = getSortingDirection( order );
+  // TODO : Add category and platform filtering
+  return db.select().from( tools ).orderBy( orderBy( tools[ sortingField as keyof typeof tools ] as AnyColumn ) ).limit( limit ).offset( offset );
+};

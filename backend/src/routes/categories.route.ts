@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { db } from '../db/db';
-import { createApiErrorResponse, doesCategoryExistsByName, doesPlatformExists, getNameFromId, getPaginationMetadata, getPaginationParams, getSortingDirection, getCategoryFromPlatform } from '../utils/apiHelpers';
+import { createApiErrorResponse, doesCategoryExistsByName, doesPlatformExists, getNameFromId, generatePaginationMetadata, getPaginationParams, getSortingDirection, getCategoryFromPlatform } from '../utils/apiHelpers';
 import { categories, platforms, NewCategoryType, categoryPlatform } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { AnyColumn } from 'drizzle-orm';
@@ -20,7 +20,7 @@ CategoriesRouter.get( '/', async ( req, res ) => {
     const totalItems = await db.$count( categories );
     const categoriesList = await db.select().from( categories ).orderBy( orderBy( categories[ sortBy as keyof typeof categories ] as AnyColumn ) ).limit( limit ).offset( offset );
 
-    const metadata = getPaginationMetadata( totalItems, page, limit, sortBy, order );
+    const metadata = generatePaginationMetadata( totalItems, page, limit, sortBy, order );
 
     // Construct response using `ApiResponse`
     const response: ApiResponse<typeof categoriesList[ number ]> = {
@@ -53,7 +53,7 @@ CategoriesRouter.get( "/platform/:platformId", async ( req, res ) => {
 
     const categoriesList = await getAllCatsFromPlatform( platformId ); // performs platform check, uuid check and returns all categories under a platform
 
-    const metadata = getPaginationMetadata( categoriesList.length, page, limit, sortBy, order );
+    const metadata = generatePaginationMetadata( categoriesList.length, page, limit, sortBy, order );
 
     const response: ApiResponse<typeof categoriesList[ number ]> = {
       success: true,

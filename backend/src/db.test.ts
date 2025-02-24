@@ -1,111 +1,202 @@
-import { platform } from "os";
-import { isValidUUID } from "./utils/apiUtils";
-import { doesPlatformExists } from "./utils/apiHelpers";
-import { db } from "./db/db";
-import { categories, categoryPlatform } from "./db/schema";
-import { eq, inArray } from "drizzle-orm";
-import { removeCatFromPlatforms } from "./controllers/categories.controller";
-
-// TO TEST :  DB queries
-console.log( "first" );
 
 
-// Get all cats from a platform
-// 1. Check platformId
-// 2. Get all cats from a platfrom from categoryPlatform table
-// 3. Make sure categoryPlatform returns all cats id in Array
-// 4. Loop through the array and get the cat details from categories table
-// 5. Return the cat details [ { id, name, description, imageUrl, platformId } ]
 
 
-const getAllCatsFromPlatform = async ( platformId: String ) => {
 
-  // Validate platformId
-  if ( !isValidUUID( platformId as string ) ) {
-    throw new Error( "Invalid platformId" );
+import { db } from "@/db/db";
+import { categories, platforms, toolCategoryPlatform, tools } from "@/db/schema";
+import { eq } from "drizzle-orm";
+
+
+
+// Get all the categories ids
+// get all the platforms ids
+
+
+
+// Generate 25 tools
+// assign each tool a random category and platform (NONE categories and platforms are possible)
+
+// insert the tools into the database
+
+// create 10  categories
+// Some are some are single constraint and some are NONE constraint(NONE)
+const categoriesArray = [
+  {
+    name: "Colors",
+    constraint: "NONE",
+  },
+  {
+    name: "UI/UX",
+    constraint: "NONE",
+  },
+  {
+    name: "Designer Books",
+    constraint: "SINGLE",
+  },
+  {
+    name: "Designer Movies",
+    constraint: "SINGLE",
+  },
+  {
+    name: "Developer Books",
+    constraint: "NONE",
+  },
+  {
+    name: "Developer Movies",
+    constraint: "NONE",
+  },
+  {
+    name: "AI Tools",
+    constraint: "NONE",
+  },
+  {
+    name: "Productivity",
+    constraint: "NONE",
+  },
+  {
+    name: "Writing",
+    constraint: "SINGLE",
+  },
+  {
+    name: "Code Generation",
+    constraint: "NONE",
+  },
+  {
+    name: "Design Systems",
+    constraint: "SINGLE",
+  },
+  {
+    name: "Prototyping",
+    constraint: "NONE",
+  },
+  {
+    name: "Version Control",
+    constraint: "NONE",
+  },
+  {
+    name: "Project Management",
+    constraint: "SINGLE",
+  },
+  {
+    name: "Collaboration",
+    constraint: "NONE",
+  },
+  {
+    name: "Learning Resources",
+    constraint: "NONE",
+  },
+  {
+    name: "Performance Tools",
+    constraint: "SINGLE",
+  },
+  {
+    name: "Security",
+    constraint: "NONE",
+  },
+  {
+    name: "Testing",
+    constraint: "NONE",
+  },
+  {
+    name: "Deployment",
+    constraint: "SINGLE",
+  },
+  {
+    name: "Monitoring",
+    constraint: "NONE",
   }
+];
 
-  // Platform Check
-  if ( !await doesPlatformExists( platformId as string ) ) {
-    throw new Error( "Platform not found" );
-  }
+// tools
+const toolsArray = [
+  { name: "Figma" },
+  { name: "Canva" },
+  { name: "Adobe XD" },
+  { name: "Sketch" },
+  { name: "InVision" },
+  { name: "Framer" },
+  { name: "Cursor" },
+  { name: "Raycast" },
+  { name: "Visual Studio Code" },
+  { name: "GitHub Copilot" },
+  { name: "ChatGPT" },
+  { name: "Linear" },
+  { name: "Notion" },
+  { name: "Trello" },
+  { name: "Slack" },
+  { name: "Zoom" },
+  { name: "MDN Web Docs" },
+  { name: "freeCodeCamp" },
+  { name: "Udemy" },
+  { name: "Jest" },
+  { name: "Cypress" },
+  { name: "Vercel" },
+  { name: "Sentry" },
+  { name: "New Relic" },
+  { name: "Photoshop" },
+  { name: "Illustrator" },
+  { name: "Premiere Pro" },
+  { name: "After Effects" },
+  { name: "Audition" },
+  { name: "Lightroom" },
+  { name: "Excalidraw" },
+  { name: "Dribbble" },
+  { name: "Behance" },
+  { name: "DeviantArt" },
+  { name: "ArtStation" },
+  { name: "Pinterest" },
+  { name: "Reddit" },
+  { name: "Twitter" },
 
-  const allCats = await db.select().from( categoryPlatform ).where( eq( categoryPlatform.platformId, platformId as string ) );
+];
 
 
-  const allCatsId = allCats.map( cat => cat.categoryId );
-  console.table( allCatsId );
+export const seedCategories = async () => {
+  const categoriesIds = await db.select( { id: categories.id, name: categories.name } ).from( categories );
+  const platformsIds = await db.select( { id: platforms.id, name: platforms.name } ).from( platforms );
 
-  const allCatsDetails = await db.select().from( categories ).where( inArray( categories.id, allCatsId ) );
-  // console.table( allCatsDetails );
-  return allCatsDetails;
+  console.log( "categoriesIds", categoriesIds );
+  console.log( "platformsIds", platformsIds );
+
+  // seed the categories
+  console.log( "Bro I am seeding the categories" );
+  const catResult = await db.insert( categories ).values(
+    categoriesArray.map( ( cat ) => (
+      {
+        name: cat.name,
+        imageUrl: "TESTURL",
+        platformConstraint: cat.constraint as "NONE" | "SINGLE",
+        description: "TESTDESCRIPTION",
+      }
+    )
+    )
+  );
+
+  console.log( "Bro! Seeded the categories", catResult );
+
+
+
 };
 
-// getAllCatsFromPlatform( "f270e38c-d6f8-4d57-894b-366621460477" );
 
-const addCatToMultiplePlatForms = async ( { catId, platformIds }: { catId: string, platformIds: string[]; } ) => {
-  try {
-    // Validate catId and platformIds
-    if ( !isValidUUID( catId ) ) {
-      throw new Error( "Invalid catId" );
-    }
+// seedCategories();
 
-    if ( platformIds.some( id => !isValidUUID( id ) ) ) {
-      throw new Error( "Invalid platformIds" );
-    }
-    // Cat Exists
-    const catExists = await db.select().from( categories ).where( eq( categories.id, catId ) );
+export const seedTools = async () => {
+  const categoriesIds = await db.select( { id: categories.id } ).from( categories );
+  const platformsIds = await db.select( { id: platforms.id } ).from( platforms );
 
-    // Check if categroy's platformConstraint is NONE or SINGLE
-    // IF SINGLE and platformIds.length > 1, throw error
-    if ( !catExists ) {
-      throw new Error( "Cat not found" );
-    }
-    console.log( 'catExists', catExists );
-    if ( catExists[ 0 ].platformConstraint === "SINGLE" && platformIds.length > 1 ) {
-      throw new Error( "Category is single platform and adding to multiple platforms is Illegal" );
-    }
-    // Platforms Exists
-    const platformsExists = await Promise.all( platformIds.map( async ( id ) => await doesPlatformExists( id ) ) );
+  // write get catgroey and plaform id from name from db
+  const getCategoryId = async ( name: string ) => {
+    const category = await db.select( { id: categories.id } ).from( categories ).where( eq( categories.name, name ) );
+    return category[ 0 ].id;
+  };
+  const getPlatformId = async ( name: string ) => {
+    const platform = await db.select( { id: platforms.id } ).from( platforms ).where( eq( platforms.name, name ) );
+    return platform[ 0 ].id;
+  };
 
-    if ( platformsExists.some( exists => !exists ) ) {
-      throw new Error( "Platform not found" );
-    }
 
-    // Check if cat is already in the platforms
-    const catInPlatforms = await db.select().from( categoryPlatform ).where( inArray( categoryPlatform.categoryId, [ catId ] ) );
-    console.log( 'catInPlatforms', catInPlatforms );
 
-    if ( catInPlatforms.length > 0 ) {
-      throw new Error( "Current Category is already in the platforms" );
-    }
-    // Add cat to platforms
-    const addCatToPlatforms = await db.insert( categoryPlatform ).values( platformIds.map( id => ( { categoryId: catId, platformId: id } ) ) );
-    return addCatToPlatforms;
-  } catch ( error ) {
-    console.log( 'error', error );
-    throw error;
-  }
+
 };
-
-// addCatToMultiplePlatForms( {
-//   catId: "7e877b0a-f7e3-4566-9e6d-c4fb3764282d", // COLOR
-//   platformIds: [ "9202db17-fa78-45f9-9d8c-a65ec1430bcc", "ca8209fc-7422-475d-954e-3d5b74fafa6b" ],
-
-// } );
-// addCatToMultiplePlatForms( {
-//   catId: "ad28cfe2-5234-4e42-bc47-08e0491fb9af", // developer books
-//   platformIds: [ "f270e38c-d6f8-4d57-894b-366621460477",  /* Book */"ca8209fc-7422-475d-954e-3d5b74fafa6b" ],
-
-// } );
-
-
-console.log( "removeCatFromPlatforms", removeCatFromPlatforms( {
-  catId: "7e877b0a-f7e3-4566-9e6d-c4fb3764282d",
-  platformIds: [
-    "ca8209fc-7422-475d-954e-3d5b74fafa6b",
-    "9202db17-fa78-45f9-9d8c-a65ec1430bcc",
-    "9202db17-fa78-45f9-9d8c-a65ec1430bcc"
-  ]
-} )
-);

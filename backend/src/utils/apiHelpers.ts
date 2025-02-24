@@ -28,7 +28,7 @@ export const getSortingDirection = ( order: string ) => {
 };
 
 // Constructs pagination metadata for the API responses
-export const getPaginationMetadata = (
+export const generatePaginationMetadata = (
   totalItems: number,
   page: number,
   limit: number,
