@@ -11,7 +11,7 @@ import { Request, Response, NextFunction } from 'express';
 export const authenticateToken = async ( req: Request, res: Response, next: NextFunction ) => {
 
   const authToken = req.headers[ 'authorization' ];
-  const token = authToken && authToken.split( ' ' )[ 1 ];
+  const token = authToken && typeof authToken === 'string' ? authToken.split( ' ' )[ 1 ] : null;
 
   if ( token == null ) {
     return res.status( 401 ).send( { message: 'Unauthorized' } );

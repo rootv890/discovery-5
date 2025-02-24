@@ -38,8 +38,10 @@ app.get( `/${ env.API_URL }/protected`, authenticateToken, ( req, reply ) => {
 
 // Server
 app.listen( env.PORT, () => {
-  console.log( `Server started @ http://localhost:${ env.PORT }` );
+            console.log( `Server started @ http://localhost:${ env.PORT }` );
 } );
+
+
 
 
 export default app;
