@@ -539,9 +539,3 @@ export type insertWaitlistUser = typeof waitlistUserTable.$inferInsert;
 export type selectWaitlistUser = typeof waitlistUserTable.$inferSelect;
 export type WaitlistUserRoleType =
 	(typeof waitlistUserRolesEnum.enumValues)[number];
-
-// Newsletter Preference Types
-export type insertNewsletterPreference =
-	typeof newsletterPreference.$inferInsert;
-export type selectNewsletterPreference =
-	typeof newsletterPreference.$inferSelect;

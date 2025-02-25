@@ -29,13 +29,12 @@ GET /admin/users/:id - admin user by id
 
 GET /admin/roles - all admin roles
 
-
-
-
 <!-- APIS -->
+
 ### API Examples
 
 #### Authentication
+
 ```bash
 # Admin Login
 curl -X POST \
@@ -53,6 +52,7 @@ curl -X POST \
 ```
 
 #### Admin Users
+
 ```bash
 # Get All Admin Users
 curl -X GET \
@@ -66,6 +66,7 @@ curl -X GET \
 ```
 
 #### Admin Roles
+
 ```bash
 # Get All Admin Roles
 curl -X GET \
