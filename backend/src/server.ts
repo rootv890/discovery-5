@@ -35,4 +35,4 @@ app.listen(env.PORT, () => {
 	console.log(`Server started @ http://localhost:${env.PORT}`);
 });
 
-export default app;
+// export default app;
