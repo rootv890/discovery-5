@@ -1,7 +1,7 @@
 import { AnyColumn, eq, ilike } from "drizzle-orm";
 import { Router } from "express";
 import { db } from "../db/db";
-import { platforms } from "../db/schema";
+import { categories, categoryPlatform, platforms } from "../db/schema";
 import { ApiMetadata, ApiResponse } from "../type";
 import {
 	checkTableExistsPromiseWithId,
@@ -24,8 +24,8 @@ PlatformsRouter.get("/", async (req, res) => {
 		// Fetch total count
 		const totalItems = await db.$count(platforms);
 
-		// Fetch paginated data
-		const platformsList = await db
+		// First fetch platforms
+		const rawPlatforms = await db
 			.select()
 			.from(platforms)
 			.orderBy(
@@ -33,6 +33,21 @@ PlatformsRouter.get("/", async (req, res) => {
 			)
 			.limit(limit)
 			.offset(offset);
+
+		const platformsWithCategories = await Promise.all(
+			rawPlatforms.map(async (platform) => {
+				const allCategories = await fetchAllCategoriesUnderPlatform(
+					platform.id
+				);
+
+				// TODO : Fetch tools
+				return {
+					...platform,
+					categories: allCategories,
+					// ToDO : Fetch tools
+				};
+			})
+		);
 
 		// const totalPages = Math.ceil( totalItems / limit );
 		const metadata = getPaginationMetadata(
@@ -45,10 +60,10 @@ PlatformsRouter.get("/", async (req, res) => {
 		// console.log( metadata );
 
 		// Construct response using `ApiResponse`
-		const response: ApiResponse<(typeof platformsList)[number]> = {
+		const response: ApiResponse<(typeof platformsWithCategories)[number]> = {
 			success: true,
 			message: "Platforms fetched successfully",
-			data: platformsList,
+			data: platformsWithCategories,
 			metadata: metadata as ApiMetadata,
 		};
 		res.status(200).json(response);
@@ -234,3 +249,21 @@ PlatformsRouter.delete("/:id", async (req, res) => {
 
 // TODOS : All categories under platform
 // TODDO : All tools under platform and categories
+
+// API Helpers
+const fetchAllCategoriesUnderPlatform = async (platformId: string) => {
+	const allCategories = await db
+		.select(
+			// @ts-ignore
+			{
+				...categories,
+				// categoryPlatform: categoryPlatform,
+			}
+		)
+		.from(categoryPlatform)
+		.leftJoin(categories, eq(categoryPlatform.categoryId, categories.id))
+		.where(eq(categoryPlatform.platformId, platformId));
+	return allCategories;
+};
+
+// TODO : Fetch all tools under platform and categories

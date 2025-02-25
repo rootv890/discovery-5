@@ -23,29 +23,40 @@ CategoriesRouter.get("/", async (req, res) => {
 			["createdAt", "name", "updatedAt"]
 		);
 
-		console.log("BODY @", req.query);
-
 		const orderDirection = getSortingDirection(order);
 
-		console.log("limit @", limit);
-		console.log("offset @", offset);
-
-		const categoriesList = await getAllCategories_Promise(
+		const rawCategories = await getAllCategories_Promise(
 			{ page, limit, sortBy, order, offset },
 			orderDirection
 		);
+
+		// Get all categories with platforms
+		const categoriesWithPlatforms = await Promise.all(
+			rawCategories.map(async (category) => {
+				const platformsData = await db
+					.select(
+						// @ts-ignore
+						{ ...platforms }
+					)
+					.from(categoryPlatform)
+					.leftJoin(platforms, eq(categoryPlatform.platformId, platforms.id))
+					.where(eq(categoryPlatform.categoryId, category.id));
+				return { ...category, platforms: platformsData };
+			})
+		);
+
 		const metadata = getPaginationMetadata(
-			categoriesList.length,
+			categoriesWithPlatforms.length,
 			page,
 			limit,
 			sortBy,
 			order
 		) as ApiMetadata;
 
-		const response: ApiResponse<(typeof categoriesList)[number]> = {
+		const response: ApiResponse<(typeof categoriesWithPlatforms)[number]> = {
 			success: true,
 			message: "Categories fetched successfully",
-			data: categoriesList,
+			data: categoriesWithPlatforms,
 			metadata,
 		};
 
@@ -350,9 +361,7 @@ export const getAllCategories_Promise = async (
 		.from(categories)
 		.orderBy(orderDirection(sortBy)) // example desc(categories.createdAt)
 		.limit(limit)
-		.offset(offset)
-		.leftJoin(categoryPlatform, eq(categories.id, categoryPlatform.categoryId))
-		.leftJoin(platforms, eq(categoryPlatform.platformId, platforms.id));
+		.offset(offset);
 };
 
 const getAllCategoriesForPlatforms = async (
@@ -381,7 +390,10 @@ const getAllCategoriesForPlatforms = async (
 	}
 
 	const categoriesData = await db
-		.select()
+		.select(
+			// @ts-ignore
+			{ ...categories, platforms: platforms }
+		)
 		.from(categories)
 		.where(inArray(categories.id, categoriesIds as string[]))
 		.orderBy(orderDirection(sortBy))
