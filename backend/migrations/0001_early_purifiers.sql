@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX "idx_category_platform" ON "category_platform" USING btree ("category_id","platform_id");

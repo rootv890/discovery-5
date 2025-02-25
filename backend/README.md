@@ -28,3 +28,49 @@ GET /admin/users - all admin users
 GET /admin/users/:id - admin user by id
 
 GET /admin/roles - all admin roles
+
+
+
+
+<!-- APIS -->
+### API Examples
+
+#### Authentication
+```bash
+# Admin Login
+curl -X POST \
+  'http://{url}/auth/login' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "admin@example.com",
+    "password": "your_password"
+  }'
+
+# Admin Logout
+curl -X POST \
+  'http://{url}/auth/logout' \
+  -H 'Authorization: Bearer YOUR_ACCESS_TOKEN'
+```
+
+#### Admin Users
+```bash
+# Get All Admin Users
+curl -X GET \
+  'http://{url}/admin/users' \
+  -H 'Authorization: Bearer YOUR_ACCESS_TOKEN'
+
+# Get Admin User by ID
+curl -X GET \
+  'http://{url}/admin/users/123' \
+  -H 'Authorization: Bearer YOUR_ACCESS_TOKEN'
+```
+
+#### Admin Roles
+```bash
+# Get All Admin Roles
+curl -X GET \
+  'http://{url}/admin/roles' \
+  -H 'Authorization: Bearer YOUR_ACCESS_TOKEN'
+```
+
+### Categories API

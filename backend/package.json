@@ -1,39 +1,44 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch src/server.ts",
-    "auth": "tsx watch src/authServer.ts",
-    "gen": "npx drizzle-kit generate",
-    "push": "npx drizzle-kit push",
-    "migrate": "npx drizzle-kit migrate",
-    "seed": "tsx src/db/seed.ts",
-    "test:db": "tsx watch src/db.test.ts"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^22.12.0",
-    "axios": "^1.7.9",
-    "drizzle-kit": "^0.30.4",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.3"
-  },
-  "dependencies": {
-    "@neondatabase/serverless": "^0.10.4",
-    "@types/bcrypt": "^5.0.2",
-    "@types/cookie-parser": "^1.4.8",
-    "@types/express": "^5.0.0",
-    "@types/jsonwebtoken": "^9.0.8",
-    "bcrypt": "^5.1.1",
-    "cookie-parser": "^1.4.7",
-    "dotenv": "^16.4.7",
-    "drizzle-orm": "^0.39.3",
-    "express": "^4.21.2",
-    "jsonwebtoken": "^9.0.2"
-  }
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "tsx watch src/server.ts",
+		"auth": "tsx watch src/authServer.ts",
+		"gen": "npx drizzle-kit generate",
+		"push": "npx drizzle-kit push",
+		"migrate": "npx drizzle-kit migrate",
+		"seed": "tsx src/db/seed.ts",
+		"test:db": "tsx watch src/db.test.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/node": "^22.12.0",
+		"axios": "^1.7.9",
+		"drizzle-kit": "^0.30.4",
+		"tsx": "^4.19.2",
+		"typescript": "^5.7.3"
+	},
+	"dependencies": {
+		"@neondatabase/serverless": "^0.10.4",
+		"@types/bcrypt": "^5.0.2",
+		"@types/cookie-parser": "^1.4.8",
+		"@types/express": "^5.0.0",
+		"@types/jsonwebtoken": "^9.0.8",
+		"bcrypt": "^5.1.1",
+		"cookie-parser": "^1.4.7",
+		"dotenv": "^16.4.7",
+		"drizzle-orm": "^0.39.3",
+		"express": "^4.21.2",
+		"jsonwebtoken": "^9.0.2"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"bcrypt",
+			"esbuild"
+		]
+	}
 }

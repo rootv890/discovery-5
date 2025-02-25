@@ -1,0 +1,103 @@
+API ENDPOINTS DOCUMENTATION
+======================
+
+Base URL: http://localhost:3000/api/v1
+
+PLATFORMS
+=========
+
+1. Get All Platforms
+curl -X GET "http://localhost:3000/api/v1/platforms?page=1&limit=10&sortBy=createdAt&order=desc"
+
+2. Get Platform by ID
+curl -X GET "http://localhost:3000/api/v1/platforms/{id}"
+
+3. Get Platform by Name
+curl -X GET "http://localhost:3000/api/v1/platforms/name/{platformName}"
+
+4. Create Platform
+curl -X POST "http://localhost:3000/api/v1/platforms" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Platform Name",
+    "description": "Platform Description",
+    "imageUrl": "https://example.com/image.jpg"
+  }'
+
+5. Delete Platform
+curl -X DELETE "http://localhost:3000/api/v1/platforms/{id}"
+
+CATEGORIES
+==========
+
+1. Get All Categories
+curl -X GET "http://localhost:3000/api/v1/categories?page=1&limit=10&sortBy=name&order=desc"
+
+2. Get Category by ID
+curl -X GET "http://localhost:3000/api/v1/categories/{id}"
+
+3. Get Categories by Platform
+curl -X GET "http://localhost:3000/api/v1/categories/platform/{platformId}"
+
+4. Create Category
+curl -X POST "http://localhost:3000/api/v1/categories" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Category Name",
+    "description": "Category Description",
+    "imageUrl": "https://example.com/image.jpg",
+    "platformConstraint": "SINGLE",
+    "platformIds": ["platform-uuid"]
+  }'
+
+5. Add Category to Multiple Platforms
+curl -X POST "http://localhost:3000/api/v1/categories/{id}/platforms" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "platformIds": ["platform-uuid-1", "platform-uuid-2"]
+  }'
+
+6. Update Category
+curl -X PATCH "http://localhost:3000/api/v1/categories/{id}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Updated Category Name",
+    "description": "Updated Description",
+    "imageUrl": "https://example.com/new-image.jpg"
+  }'
+
+7. Delete Category
+curl -X DELETE "http://localhost:3000/api/v1/categories/{id}"
+
+8. Remove Category from Platforms
+curl -X DELETE "http://localhost:3000/api/v1/categories/{id}/remove-platforms" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "platformIds": ["platform-uuid-1", "platform-uuid-2"]
+  }'
+
+TOOLS
+=====
+
+1. Get All Tools
+curl -X GET "http://localhost:3000/api/v1/tools"
+
+Note: Replace {id}, {platformId}, and other placeholder values with actual UUIDs or values when making requests.
+All responses follow this format:
+{
+  "success": boolean,
+  "message": string,
+  "data": array | object,
+  "metadata"?: {
+    "total": number,
+    "page": number,
+    "limit": number,
+    "sortBy": string,
+    "order": string
+  },
+  "error"?: {
+    "code": number,
+    "message": string,
+    "details": string
+  }
+}
