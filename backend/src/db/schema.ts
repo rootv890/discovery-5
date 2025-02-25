@@ -140,34 +140,24 @@ export const categoryPlatform = pgTable(
 	(t) => [uniqueIndex("idx_category_platform").on(t.categoryId, t.platformId)]
 );
 
-export const tools = pgTable(
-	"tools",
-	{
-		id: uuid("id").primaryKey().defaultRandom(),
-		name: varchar("name", { length: 256 }).notNull().unique(),
-		description: text("description"),
-		imageUrl: text("image_url").notNull(), // Recommended : JPG or PNG
-		thumbnailUrls: jsonb("thumbnail_urls").$type<{
-			// 📱 Small: For mobile devices
-			small?: string; //  320-480px wide
-			// 💻 Medium: For tablets and smaller screens
-			medium?: string; //  768-1024px wide
-			// 🖥️ Large: For desktop and high-resolution displays
-			large?: string; //  1200px and above
-		}>(),
-		approvalStatus:
-			toolApprovalStatusEnum("approval_status").default("PENDING"),
-		isNew: boolean("is_new").default(false),
-		createdAt: timestamp("created_at").defaultNow(),
-		updatedAt: timestamp("updated_at").defaultNow(),
-	},
-
-	(t) => [
-		uniqueIndex("idx_tools_approved")
-			.on(t.approvalStatus)
-			.where(eq(t.approvalStatus, "APPROVED")),
-	]
-);
+export const tools = pgTable("tools", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	name: varchar("name", { length: 256 }).notNull().unique(),
+	description: text("description"),
+	imageUrl: text("image_url").notNull(), // Recommended : JPG or PNG
+	thumbnailUrls: jsonb("thumbnail_urls").$type<{
+		// 📱 Small: For mobile devices
+		small?: string; //  320-480px wide
+		// 💻 Medium: For tablets and smaller screens
+		medium?: string; //  768-1024px wide
+		// 🖥️ Large: For desktop and high-resolution displays
+		large?: string; //  1200px and above
+	}>(),
+	approvalStatus: toolApprovalStatusEnum("approval_status").default("PENDING"),
+	isNew: boolean("is_new").default(false),
+	createdAt: timestamp("created_at").defaultNow(),
+	updatedAt: timestamp("updated_at").defaultNow(),
+});
 
 export const tags = pgTable("tags", {
 	id: uuid("id").primaryKey().defaultRandom(),
