@@ -196,3 +196,7 @@ I will update this on Sunday 26th January 2025.
 - [] New queries for Tools, recycle bin, user collection ,user collection bin, user tool bin
 - [] New API endpoints for Tools, recycle bin, user collection ,user collection bin, user tool bin
 - [] New API Helpers for Tools, recycle bin, user collection ,user collection bin, user tool bin
+
+## February 25, 2025
+
+- [x] Enhance platforms and categories routes with nested data fetching
