@@ -200,3 +200,7 @@ I will update this on Sunday 26th January 2025.
 ## February 25, 2025
 
 - [x] Enhance platforms and categories routes with nested data fetching
+- [x] Get all Tools Endpoint
+- [x] Improve the API Helpers
+
+## February 26, 2025

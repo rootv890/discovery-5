@@ -20,9 +20,8 @@ PlatformsRouter.get("/", async (req, res) => {
 			req.query,
 			["createdAt", "name"]
 		);
-		const orderDirection = getSortingDirection(order);
+		const orderDirection = getSortingDirection(order as "asc" | "desc");
 		// Fetch total count
-		const totalItems = await db.$count(platforms);
 
 		// First fetch platforms
 		const rawPlatforms = await db
@@ -49,15 +48,13 @@ PlatformsRouter.get("/", async (req, res) => {
 			})
 		);
 
-		// const totalPages = Math.ceil( totalItems / limit );
-		const metadata = getPaginationMetadata(
-			totalItems,
+		const metadata: ApiMetadata = await getPaginationMetadata(
 			page,
 			limit,
 			sortBy,
-			order
+			order as "asc" | "desc",
+			platforms
 		);
-		// console.log( metadata );
 
 		// Construct response using `ApiResponse`
 		const response: ApiResponse<(typeof platformsWithCategories)[number]> = {
@@ -66,6 +63,7 @@ PlatformsRouter.get("/", async (req, res) => {
 			data: platformsWithCategories,
 			metadata: metadata as ApiMetadata,
 		};
+		console.log("Successfully fetched platforms ✅");
 		res.status(200).json(response);
 	} catch (error) {
 		const errorResponse: ApiResponse<null> = {
@@ -78,6 +76,7 @@ PlatformsRouter.get("/", async (req, res) => {
 				details: (error as Error).stack,
 			},
 		};
+		console.log("Error fetching platforms ❌", errorResponse);
 		res.status(500).json(errorResponse);
 	}
 });

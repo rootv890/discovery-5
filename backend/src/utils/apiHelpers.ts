@@ -5,6 +5,8 @@
 import { asc, desc, eq, ilike, inArray } from "drizzle-orm";
 import { db } from "../db/db";
 import { categories, categoryPlatform, platforms, tools } from "../db/schema";
+import { PgTable } from "drizzle-orm/pg-core";
+import { ApiMetadata } from "@/type";
 
 export const getPaginationParams = (
 	query: any, // eg : req.query
@@ -24,7 +26,7 @@ export const getPaginationParams = (
 	//  page: 1, 2, 3
 	//  limit: 10, 20, 30
 
-	return { sortBy, order, page, limit, offset };
+	return { sortBy, order: order as "asc" | "desc", page, limit, offset };
 };
 
 // Returns the drizzle order function based on the order string
@@ -32,24 +34,26 @@ export const getPaginationParams = (
 // 	return order.toString() === "asc" ? asc : desc; //
 // };
 // Updated
-export const getSortingDirection = (order: string) => {
+export const getSortingDirection = (order: "asc" | "desc") => {
 	return order === "asc" ? asc : desc;
 	// eg: asc(categories.name)
 };
 
 // Constructs pagination metadata for the API responses
-export const getPaginationMetadata = (
-	totalItems: number,
+export const getPaginationMetadata = async (
 	page: number,
 	limit: number,
 	sortBy: string,
-	order: string
-) => {
+	order: "asc" | "desc",
+	table: PgTable
+): Promise<ApiMetadata> => {
+	const totalItems = await db.$count(table);
+	console.log("Total items", totalItems);
 	const totalPages = Math.ceil(totalItems / limit);
 	return {
 		total: totalItems,
-		page,
-		limit,
+		page: page ?? 1,
+		limit: limit ?? 10,
 		totalPages,
 		nextPage: page + 1 > totalPages ? null : page + 1,
 		previousPage: page - 1 < 1 ? null : page - 1,
@@ -57,8 +61,8 @@ export const getPaginationMetadata = (
 		hasPreviousPage: page - 1 >= 1,
 		isFirstPage: page === 1,
 		isLastPage: page === totalPages,
-		sortBy,
-		order,
+		sortBy: sortBy ?? "createdAt",
+		order: order ?? "desc",
 		timestamp: Date.now(),
 	};
 };

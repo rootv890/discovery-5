@@ -23,7 +23,7 @@ CategoriesRouter.get("/", async (req, res) => {
 			["createdAt", "name", "updatedAt"]
 		);
 
-		const orderDirection = getSortingDirection(order);
+		const orderDirection = getSortingDirection(order as "asc" | "desc");
 
 		const rawCategories = await getAllCategories_Promise(
 			{ page, limit, sortBy, order, offset },
@@ -45,13 +45,13 @@ CategoriesRouter.get("/", async (req, res) => {
 			})
 		);
 
-		const metadata = getPaginationMetadata(
-			categoriesWithPlatforms.length,
+		const metadata: ApiMetadata = await getPaginationMetadata(
 			page,
 			limit,
 			sortBy,
-			order
-		) as ApiMetadata;
+			order,
+			categories
+		);
 
 		const response: ApiResponse<(typeof categoriesWithPlatforms)[number]> = {
 			success: true,
@@ -83,13 +83,13 @@ CategoriesRouter.get("/all/:platformId", async (req, res) => {
 			[platformId]
 		);
 
-		const metadata = getPaginationMetadata(
-			categoriesList.length,
+		const metadata: ApiMetadata = await getPaginationMetadata(
 			page,
 			limit,
 			sortBy,
-			order
-		) as ApiMetadata;
+			order,
+			categories
+		);
 
 		const response: ApiResponse<(typeof categoriesList)[number]> = {
 			success: true,
